@@ -12,83 +12,75 @@ functions for working with the cognitive atlas!
 import os
 import json
 import errno
+import rdflib
 import urllib2
 import numpy as np
+from pandas.io.json import read_json
 from urllib2 import Request, urlopen, HTTPError
-import rdflib
 
+# File operations 
+def mkdir_p(path):
+  try:
+      os.makedirs(path)
+  except OSError as exc: # Python >2.5
+    if exc.errno == errno.EEXIST and os.path.isdir(path):
+      pass
+    else: raise
+
+def url_get(url):
+  request = Request(url)
+  response = urlopen(request)
+  return response.read()
+
+# Data Json Object
+class DataJson:
+  """DataJson: internal class for storing json, accessed by NeuroVault Object"""
+  def __init__(self,url):
+    self.url = url
+    self.json = self.get_json()
+    self.data = self.parse_json() 
+    
+  """Print json data fields"""
+  def __str__(self):
+    return "DataJson Object dj Includes <dj.data:dict,js.json:list,dj.fields:list,dj.url:str>"
+
+  """Get raw json object"""
+  def get_json__(self):
+    return urllib2.urlopen(self.url).read()
+    
+  """Parse a json object into a dictionary (key = fields) of dictionaries (key = file urls)"""
+  def parse_json(self):
+    if not self.json:
+      self.json = self.get_json()
+    return json.loads(self.json)
 
 # Data RDF Object
-
 class DataRDF:
   """DataRDF: internal class for storing rdf, accessed by cognitiveatlas"""
   def __init__(self,url):
     self.url = url
-    self.rdf = self.__get_rdf__()
-
-    #self.ttl = self.__parse_ttl__() 
+    self.rdf = self.get_rdf()
+    self.triples = self.read_triples()
    
   """Get raw json object"""
-  def __get_rdf__(self):
+  def get_rdf(self):
     ca_g = rdflib.Graph()
     return ca_g.parse(self.url)
 
-  """This function should create a provenance (prov) from an RDF"""
-  def __make_prov__():
-    print "TODO: Not sure how to do this :P"
-    
-  """This function should create a provenance (prov) from an RDF"""
-  def __parse_ttl__(self):
-    if not self.rdf:
-      self.raw = self.__get_rdf__()
-    # TODOHere - we want to convert to turtle
-
-  """This will save the xml (rdf file) as n3"""
-  def save(ext="n3",output_name):
-    if ext == "n3":
+  def save(self,output_name,data_format="rdf"):
+    if data_format == "rdf":  
       tmp = self.rdf.serialize(format='n3')
-      filey = open(output_name,"wb")
+      filey = open("%s.n3" % output_name,"wb")
       filey.writelines(tmp)
       filey.close()
+    else:
+      self.triples.to_csv("%s.tsv" % output_name,sep="\t")
 
-
-  def read_tripes(self,pred)
-  # STOPPED HERE: TODO: Write a function that can take a term of interest and return
-  # the identifier from the rdf.
-  # learn here --> http://rdflib.readthedocs.org/en/latest/gettingstarted.html
-  # here from Chris --> http://nidm.nidash.org/specs/nidm-results_020.html
-  
-   # Here is an example of a query OMG IT'S SPARQL-ish :O
-        query = """
-        prefix prov: <http://www.w3.org/ns/prov#>
-        prefix nidm: <http://www.incf.org/ns/nidash/nidm#>
-        prefix spm: <http://www.incf.org/ns/nidash/spm#>
-        prefix fsl: <http://www.incf.org/ns/nidash/fsl#>
-        prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-        SELECT ?rdfLabel ?contrastName ?statFile ?statType WHERE {
-         ?cid a nidm:ContrastMap ;
-              nidm:contrastName ?contrastName ;
-              prov:atLocation ?cfile .
-         ?cea a nidm:ContrastEstimation .
-         ?cid prov:wasGeneratedBy ?cea .
-         ?sid a nidm:StatisticMap ;
-              nidm:statisticType ?statType ;
-              rdfs:label ?rdfLabel ;
-              prov:atLocation ?statFile .
-        }
-        """
-        
-
-        # Here is an example of how to do the query (we should do this to get ids for our concepts
-        c_results = nidm_g.query(query)
-        for row in c_results.bindings:
-            c_row = {}
-            for key, val in sorted(row.items()):
-                c_row[str(key)] = val.decode()
-            self.contrasts.append(c_row)
-
-        # uniquify contrast values by file
-        self.contrasts = {v['statFile']:v for v in self.contrasts}.values()
-
-        return self.contrasts
-
+  def read_triples(self):
+    print "Reading triples into data frame..."
+    tmp = pandas.DataFrame(columns=["subject","predicate","object"])
+    count = 0
+    for subj, pred, obj in ca_g:
+      tmp.loc[count] = [subj.encode("utf-8"),pred.encode("utf-8"),obj.encode("utf-8")]
+      count += 1
+    return tmp

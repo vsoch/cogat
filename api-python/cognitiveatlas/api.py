@@ -8,6 +8,7 @@ functions for working with the cognitive atlas!
 
 
 """
+
 import os
 import json
 import string
@@ -24,25 +25,28 @@ __version__ = "$Revision: 1.0 $"
 __date__ = "$Date: 2015/01/23 $"
 __license__ = "BSD"
 
-def get_concepts_df():
-   """Get concepts data frame"""
-   concepts = DataRDF("http://www.cognitiveatlas.org/rdf/objects/all_concepts.rdf")
 
-def get_tasks_df():
-   """Get tasks data frame"""
+def get_concepts_df(filters=None)
+  concepts = DataRDF("http://www.cognitiveatlas.org/rdf/objects/all_concepts.rdf")
+  if filters: concepts = filter_result(concepts,filters) 
+  return concepts
 
+def get_tasks_df(filters=None):
+  tasks = DataRDF("http://www.cognitiveatlas.org/rdf/objects/all_tasks.rdf")
+  if filters: tasks = filter_result(tasks,filters) 
+  return tasks
 
 def get_disorders_df():
-   """Get disorders data frame"""
-
+  disorders = DataRDF("http://www.cognitiveatlas.org/rdf/objects/all_disorders.rdf")
+  if filters: disorders = filter_result(disorders,filters) 
+  return disorders
 
 def get_collections_df():
-   """Get collections data frame"""
+  tasks = DataRDF("http://www.cognitiveatlas.org/rdf/objects/all_collections.rdf")
+  if filters: collections = filter_result(collections,filters) 
+  return collections
 
-
- images = DataJson("http://neurovault.org/api/images/?format=json")
-    images.data['collection'] = images.data['collection'].apply(lambda x: int(x.split("/")[-2]))
-    images.data['image_id'] = images.data['url'].apply(lambda x: int(x.split("/")[-2]))
-    images.data.rename(columns={'collection':'collection_id'}, inplace=True)
-   
+def filter_result(triples_df,filters):
+  if isinstance(filters,str): filters = [filters]  
+  return triples_df[triples_df['predicate'].isin(filters)] 
 
