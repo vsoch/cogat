@@ -15,7 +15,7 @@ import errno
 import rdflib
 import urllib2
 import numpy as np
-from pandas.io.json import read_json
+import pandas
 from urllib2 import Request, urlopen, HTTPError
 
 # File operations 
@@ -80,7 +80,7 @@ class DataRDF:
     print "Reading triples into data frame..."
     tmp = pandas.DataFrame(columns=["subject","predicate","object"])
     count = 0
-    for subj, pred, obj in ca_g:
+    for subj, pred, obj in self.rdf:
       tmp.loc[count] = [subj.encode("utf-8"),pred.encode("utf-8"),obj.encode("utf-8")]
       count += 1
     return tmp

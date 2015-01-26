@@ -15,7 +15,7 @@ import string
 import urllib
 import urllib2
 import numpy as np
-import pandas as pd
+import pandas
 import nibabel as nb
 import numpy as np
 from utils import DataRDF
@@ -26,25 +26,25 @@ __date__ = "$Date: 2015/01/23 $"
 __license__ = "BSD"
 
 
-def get_concepts_df(filters=None)
+def get_concepts_df(filters=None):
   concepts = DataRDF("http://www.cognitiveatlas.org/rdf/objects/all_concepts.rdf")
-  if filters: concepts = filter_result(concepts,filters) 
-  return concepts
+  if filters: concepts.triples = filter_result(concepts.triples,filters) 
+  return concepts.triples
 
 def get_tasks_df(filters=None):
   tasks = DataRDF("http://www.cognitiveatlas.org/rdf/objects/all_tasks.rdf")
-  if filters: tasks = filter_result(tasks,filters) 
-  return tasks
+  if filters: tasks.triples = filter_result(tasks.triples,filters) 
+  return tasks.triples
 
-def get_disorders_df():
+def get_disorders_df(filters=None):
   disorders = DataRDF("http://www.cognitiveatlas.org/rdf/objects/all_disorders.rdf")
-  if filters: disorders = filter_result(disorders,filters) 
-  return disorders
+  if filters: disorders.triples = filter_result(disorders.triples,filters) 
+  return disorders.triples
 
-def get_collections_df():
-  tasks = DataRDF("http://www.cognitiveatlas.org/rdf/objects/all_collections.rdf")
-  if filters: collections = filter_result(collections,filters) 
-  return collections
+def get_collections_df(filters=None):
+  collections = DataRDF("http://www.cognitiveatlas.org/rdf/objects/all_collections.rdf")
+  if filters: collections.triples = filter_result(collections.triples,filters) 
+  return collections.triples
 
 def filter_result(triples_df,filters):
   if isinstance(filters,str): filters = [filters]  

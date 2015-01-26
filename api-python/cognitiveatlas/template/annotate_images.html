@@ -1,0 +1,2010 @@
+<!DOCTYPE html>
+<!-- Bootstrap -->
+<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+<meta charset="utf-8">
+<style>
+
+.dot circle {
+  fill: lightsteelblue;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.dot circle.dragging {
+  fill: red;
+  stroke: brown;
+}
+
+.axis line {
+  fill: none;
+  stroke: #ddd;
+  shape-rendering: crispEdges;
+  vector-effect: non-scaling-stroke;
+}
+
+.form-control {
+    outline: 0;
+    border-color: #ECECEC;
+    border-style: solid;
+    border-width: 1px;
+    width: 95%;
+    background-color: #ffffff;
+    padding: 6px;
+    border-radius: 2px;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.bp-autocomplete-holder {
+    position: relative;
+}
+
+.bp-autocomplete-dropdown {
+    border-color: #ececec;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 2px;
+    width: 250px;
+    padding: 6px;
+    cursor: pointer;
+    z-index: 9999;
+    position: absolute;
+    /*top: 32px;
+    left: 0px;
+    */
+    margin-top: -6px;
+    background-color: #ffffff;
+}
+
+.bp-autocomplete-searching {
+    color: #bp-acacac;
+    font-size: 14px;
+}
+
+.bp-autocomplete-description {
+    font-size: 14px;
+}
+
+.bp-autocomplete-row {
+    padding: 5px;
+    color: #000000;
+    margin-bottom: 4px;
+
+}
+
+.bp-autocomplete-selected-row, .bp-autocomplete-row:hover {
+    background-color: lightblue;
+    color: #ffffff;
+}
+
+.bp-autocomplete-image-holder {
+    padding-top: 2px;
+    float: left;
+    margin-right: 10px;
+    margin-left: 5px;
+}
+
+.bp-autocomplete-image {
+    height: 34px;
+    width: 34px;
+    border-radius: 50%;
+    border-color: #ececec;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.bp-autocomplete-image-default {
+    /* Add your own default image here
+     background-image: url('/assets/default.png');
+    */
+    background-position: center;
+    background-size: contain;
+    height: 34px;
+    width: 34px;
+}
+
+
+
+.bp-ac {
+    font-family: "bariol_regularregular", Arial;
+    letter-spacing: 0.01em;
+    font-size: 14px;
+    padding: 40px;
+    text-rendering: optimizeLegibility;
+    margin: 0px;
+    height: 100%;
+    text-align: left;
+}
+
+.bp-ac input, button, textarea {
+    -webkit-appearance: none;
+}
+
+#bp-ac .white-bg {
+    background: #ffffff;
+    min-height: 100%;
+}
+
+.bp-ac a {
+    color: #5BCDD5;
+    text-decoration: none;
+}
+
+#bp-ac a:hover {
+    color: #F98200;
+}
+
+#bp-ac .centered-heading {
+    font-family: "bariol_regularregular", Arial;
+    font-size: 5em;
+    text-align: center;
+}
+
+#bp-ac h1, h2, h3, h4, h5, h6 {
+    font-family: "bariol_regularregular", Arial;
+    line-height: 1em;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+h1 {
+    font-size: 4em;
+}
+
+h3 {
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+
+p {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.container {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/* Top Menu */
+.top-bar {
+    padding: 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 30px;
+    color: #ffffff;
+    width: 100%;
+    background-color: #363636;
+    z-index: 100001;
+}
+
+.top-bar-inner {
+    height: 10px;
+    margin: 10px;
+}
+
+.top-bar-brand {
+    position: absolute;
+    top: 15px;
+}
+
+.top-bar-logo {
+    height: 30px;
+}
+
+.top-bar-links {
+    display: none;
+}
+
+.top-bar-mobile-link-menu {
+    float: right;
+    font-size: 1.8em;
+    margin-right: 10px;
+    margin-top: 10px;
+    color: #FF4157;
+
+}
+
+h1 {
+    font-size: 36px;
+}
+
+@media screen and (min-width: 500px) {
+    h1 {
+        font-size: 50px;
+    }
+
+    .top-bar-mobile-link-menu {
+        display: none;
+    }
+
+    .top-bar-links {
+        display: block;
+        position: absolute;
+        top: 0px;
+        left: 150px;
+    }
+
+    .top-bar-links ul {
+        list-style: none;
+    }
+
+    .top-bar-links li {
+        list-style: none;
+        float: left;
+        margin-right: 20px;
+        font-family: "bariol_regularregular";
+        font-size: 16px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+    }
+
+    .top-bar-link-active a {
+        color: #60CDD4;
+    }
+
+    .top-bar-links a {
+        color: #ffffff;
+    }
+
+    .top-bar-links a:hover {
+        color: #F98200;
+    }
+
+    .top-bar-link-active:after {
+        display: block;
+        position: relative;
+        top: 8px;
+        height: 6px;
+        width: 100%;
+        background-color: #F98200;
+        content: "";
+    }
+}
+
+/* Rows and columns */
+.row {
+    margin-top: 10px;
+    display: block;
+}
+
+.text-centered {
+    text-align: center;
+}
+
+.col-3, col-6 {
+    margin-bottom: 10px;
+}
+
+.jumbotron {
+    padding-top: 40px;
+    text-align: center;
+}
+
+.jumbotron-red {
+    background-color: #FF5C5B;
+    color: #ffffff;
+    padding: 30px;
+    text-align: left;
+}
+
+@media screen and (min-width: 500px) {
+    .col-3 {
+        float: left;
+        width: 31%;
+        margin-left: 1%;
+        margin-right: 1%;
+    }
+
+    .col-6 {
+        float: left;
+        width: 48%;
+        margin-left: 1%;
+        margin-right: 1%;
+    }
+
+    .col-12 {
+        float: left;
+        width: 98%;
+        margin-left: 1%;
+        margin-right: 1%;
+    }
+}
+
+/* Buttons */
+.btn {
+    border-style: none;
+    font-size: 14px;
+    margin: 14px;
+    margin-left: 4px;
+    margin-right: 4px;
+    border-radius: 2px;
+    padding: 10px;
+    cursor: pointer;
+    min-width: 100px;
+}
+
+.btn-slim {
+    min-width: 50px;
+}
+
+.btn-large {
+    font-size: 22px;
+}
+
+.btn:focus {
+    border-style: none;
+    outline-style: none;
+}
+
+.btn-blue {
+    background-color: #60CDD4;
+    color: #ffffff;
+}
+
+.btn-blue:hover {
+    background-color: #1D94B0;
+    color: #ffffff;
+}
+
+.btn-orange {
+    background-color: #FFA300;
+    color: #ffffff;
+}
+
+.dropdown-description {
+    display: none;
+}
+
+.criteria-table-cell {
+    color: #ffffff;
+    padding: 4px;
+    display: block;
+    text-align: center;
+    border-radius: 4px;
+}
+
+@media screen and (min-width: 400px) {
+    .dropdown-description {
+        display: block;
+        position: absolute;
+        right: 70px;
+        top: 15px;
+        max-width: 200px;
+        background-color: #000000;
+        color: #ffffff;
+        border-radius: 4px;
+        padding: 6px;
+        padding-left: 10px;
+        padding-right: 10px;
+        opacity: 0.8;
+    }
+}
+
+.dropdown {
+    width: 53px;
+    position: absolute;
+    right: 4px;
+    top: 50px;
+    z-index: 100;
+    padding: 0px;
+    text-align: left;
+    text-align: center;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+    text-align: center;
+}
+
+.dropdown-icon {
+    margin-bottom: 0px;
+    padding: 5px;
+    cursor: pointer;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.dropdown-icon:hover {
+    background-color: #fb8200;
+}
+
+.dropdown-orange {
+    background-color: #FFA300;
+    color: #ffffff;
+}
+
+.btn-orange:hover {
+    background-color: #F78200;
+    color: #ffffff;
+}
+
+.padded-row {
+    margin-top: 10px;
+}
+
+.large-padded-row {
+    margin-top: 20px;
+}
+
+.very-large-padded-row {
+    margin-top: 40px;
+}
+
+.full-screen-cancel:hover {
+    color: #363636;
+    cursor: pointer;
+}
+
+.grey-background {
+    background-color: #888888;
+}
+
+.big-card-controls {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    font-size: 16px;
+    color: #bp-acACAC;
+}
+
+.comment-details {
+    color: #e0e0e0;
+    font-size: 11px;
+}
+
+.comment-details a {
+    color: #e0e0e0;
+}
+
+.comment-details a:hover {
+    color: #F98200;
+}
+
+.icon-spaced-right {
+    margin-right: 2px;
+}
+
+.ng-cloak {
+    display: none;
+}
+
+.card {
+    position: relative;
+    margin-top: 20px;
+    border-radius: 4px;
+    padding: 20px;
+    background: #FFFFFF;
+    /*-moz-box-shadow:    0px 0px 4px 0px #D8D8D8;
+    -webkit-box-shadow: 0px 0px 4px 0px #D8D8D8;
+    box-shadow:         0px 0px 4px 0px #D8D8D8;*/
+    border-style: none;
+    border-style: solid;
+    border-color: #D8D8D8;
+    border-width: 1px;
+    height: 140px;
+    overflow: auto;
+    cursor: pointer;
+    max-width: 220px;
+    margin-bottom: 10px;
+}
+
+.card.ng-show {
+    opacity: 0;
+    display: block !important;
+    transition: opacity 1s;
+}
+
+.card-full-width {
+    max-width: 1000px;
+}
+
+.card.ng-show-active {
+    opacity: 1;
+}
+
+.circle-image {
+    position: absolute;
+    left: 10px;
+    border-radius: 50%;
+    height: 70px;
+    width: 70px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #E1E1E1;
+}
+
+.card-content-float {
+    position: absolute;
+    left: 90px;
+    right: 10px;
+}
+
+.card-content {
+
+}
+
+.card-heading {
+    font-size: 22px;
+    font-weight: 800;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-small-text {
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tags {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 4px;
+}
+
+.tag {
+    padding-bottom: 1px;
+    font-size: 10px;
+    color: #A4A4A4;
+    padding: 2px;
+    border-bottom-style: solid;
+    border-bottom-width: 0px;
+    background-color: #ECECEC;
+    margin-right: 5px;
+    border-radius: 6px;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.search-box {
+    position: relative;
+    border-style: solid;
+    border-color: #F2F2F2;
+    border-width: 2px;
+    border-radius: 4px;
+    padding: 6px;
+    background-color: #ffffff;
+    margin-top: 10px;
+}
+
+.search-box-entry {
+    padding-left: 10px;
+}
+
+.search-box-entry-input {
+    width: 80%;
+    border-style: none;
+    font-size: 18px;
+}
+
+.search-box-icon {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.search-box-entry-input:focus {
+    outline: 0;
+}
+
+.lead {
+    font-size: 22px;
+}
+
+.centered {
+    text-align: center;
+}
+
+.login-page {
+    background: #5B5B5C;
+}
+
+.login-form {
+    width: 220px;
+    margin-right: auto;
+    margin-left: auto;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.form-control {
+    outline: 0;
+    border-color: #ECECEC;
+    border-style: solid;
+    border-width: 1px;
+    width: 95%;
+    background-color: #ffffff;
+    padding: 6px;
+    border-radius: 2px;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.form-control-small {
+    width: 72%;
+}
+
+.form-control:-webkit-autofill {
+    background-color: #fff !important;
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+
+.error-handler-title {
+    font-size: 50px;
+    color: #ffffff;
+}
+
+.error-handler-text {
+    font-size: 22px;
+    color: #ffffff;
+}
+
+.icon-spaced {
+    margin-left: 5px;
+}
+
+.form-control-fill {
+    width: 96%;
+}
+
+.profile-circle {
+    position: relative;
+    top: 10px;
+    width: 30px;
+    height: 30px;
+    display: left;
+    margin-right: 10px;
+    border-radius: 50%;
+    border-color: #363636;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.criterion {
+    font-size: 14px;
+    display: inline;
+    margin-left: 2px;
+    width: 300px;
+    height: 150px;
+    position: relative;
+}
+
+.criterion-rating {
+    padding: 2px;
+    background-color: #bp-acacac;
+    border-radius: 0px;
+    color: #ffffff;
+    margin-left: 3px;
+    font-size: 12px;
+    margin-top: -3px;
+    padding-left: 5px;
+    padding-right: 5px;
+    cursor: pointer;
+    display: inline;
+}
+
+.criterion-rating-dropdown {
+    padding: 2px;
+    border-radius: 0px;
+    color: #bp-acACAC;
+    margin-left: 0px;
+    font-size: 12px;
+    margin-top: -3px;
+    padding-left: 5px;
+    padding-right: 5px;
+    cursor: pointer;
+    display: block;
+}
+
+.criterion-rating-dropdown:hover {
+    color: #383736;
+}
+
+.criterion-rating-green {
+    background-color: #5BC25B;
+}
+
+.criterion-rating-red {
+    background-color: #EA3D35;
+}
+
+.criterion-rating-orange {
+    background-color: #F88707;
+}
+
+.criterion-dropdown {
+    width: 60px;
+    text-align: left;
+    top: 60px;
+    left: 100px;
+    padding: 2px;
+    background-color: #e0e0e0;
+    z-index: 9999;
+    position: relative;
+}
+
+.inline {
+    display: inline;
+}
+
+.criterion-menu {
+    display: inline;
+}
+
+input[type="checkbox"] {
+    -webkit-appearance: checkbox;
+    padding-bottom: 10px;
+    cursor: pointer;
+}
+
+.reveal-section {
+    margin-left: 5px;
+    margin-right: 5px;
+    border-radius: 6px;
+    background-color: #363636;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: #ffffff;
+}
+
+.tab-section {
+    height: 36px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #E0E0E0;
+}
+
+.tab {
+    list-style-position: inside;
+    margin-left: 0px;
+    list-style-type: none;
+    padding-left: 5px;
+}
+
+.tab li {
+    list-style: none;
+    text-indent: 0px;
+    margin-left: 10px;
+    float: left;
+    border: 1px solid #E0E0E0;
+    border-bottom-width: 0;
+    margin-right: 10px;
+    padding: 8px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.bp-active-tab {
+    padding-top: 0px;
+    font-family: bariol_boldbold;
+    margin-top: -5px;
+    color: #000000;
+    height: 21px;
+    padding-top: 12px !important;
+}
+
+.bp-active-tab a {
+    color: #000000;
+    height: 25px;
+    padding-top: 13px;
+}
+
+.col-right-align {
+    text-align: right;
+}
+
+.top-right-float {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.idea-board-settings {
+    position: absolute;
+    top: 100px;
+    right: 0px;
+}
+
+.relative {
+    position: relative;
+}
+
+.heading-with-icons {
+    padding-right: 80px;
+}
+
+[contenteditable]:focus {
+    outline: 0px solid transparent;
+}
+
+.placeholder-colour {
+    color: #e0e0e0;
+}
+
+.card.ng-show {
+    -webkit-transition:all linear 0.5s;
+    transition:all linear 0.5s;
+    line-height:20px;
+    opacity:0.2;
+    padding:10px;
+    border:1px solid black;
+    background:black;
+}
+
+.opaque-cover {
+    position: relative;
+    top: 0;
+    left: 0;
+    opacity: 0.5;
+    background-color: #000000;
+    z-index: 9999;
+    height: 100%;
+    width: 100%;
+}
+
+.bold-span {
+    font-family: "bariol_boldbold";
+    margin-left: 5px;
+}
+
+.bold-span a {
+    color: #000000;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.full-screen-card {
+    background-color: #ffffff;
+    z-index: 9999;
+    position: absolute;
+    left: 0;
+    top: 50;
+    width: 100%;
+    height: 100%;
+}
+
+.card-centered {
+    width: 60%;
+    height: 170px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 18px;
+    margin: auto;
+    padding: 20px;
+    overflow: auto;
+    margin-top: 20px;
+
+}
+
+.carousel {
+    position: fixed;
+    height: 50px;
+    top: 0;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 30px;
+    cursor: pointer;
+    color: #E0E0E0;
+}
+
+.left-carousel {
+    left: 20px;
+}
+
+.right-carousel {
+    right: 20px;
+}
+
+.right-carousel:hover, .left-carousel:hover {
+    color: #363636;
+}
+
+.btn-input {
+    min-width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.big-comment-section {
+    margin-top: 20px;
+    text-align: left;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.big-idea {
+    text-align: center;
+}
+
+.comment {
+    position: relative;
+    left: 42px;
+    top: -28px;
+    width: 80%;
+}
+
+.comment-holder {
+    margin-top: -15px;
+}
+
+.comment-entry {
+    margin-bottom: 10px;
+}
+
+@media screen and (min-width: 680px) {
+    .comment {
+        width: 90%;
+    }
+
+    .btn-input {
+        position: relative;
+        left: -3px;
+        top: -1px;
+        height: 31px;
+        padding-top: 6px;
+        min-width: 30px;
+    }
+
+    .card-centered {
+        width: 400px;
+        height: 250px;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 800px;
+        font-size: 30px;
+        margin: auto;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        padding: 50px;
+        margin-top: 40px;
+    }
+
+    .carousel {
+        position: fixed;
+        height: 100px;
+        top: 0;
+        bottom: 0;
+        margin-top: auto;
+        margin-bottom: auto;
+        font-size: 100px;
+        cursor: pointer;
+        color: #E0E0E0;
+    }
+
+    .left-carousel {
+        left: 40px;
+    }
+
+    .right-carousel {
+        right: 40px;
+    }
+
+    .big-comment-section {
+        margin-top: 20px;
+        text-align: left;
+        width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .form-control-small {
+        width: 80%;
+    }
+
+    .login-form {
+        width: 500px;
+    }
+}
+
+.postit {
+    text-align:center;
+    width: 275px;
+    margin: 25px;
+    min-height:175px;
+    max-height:175px;
+    padding-top:35px;
+    position:relative;
+    border:1px solid #E8E8E8;
+    border-top:60px solid #fdfd86;
+    font-family:'Reenie Beanie';
+    font-size:22px;
+    border-bottom-right-radius: 60px 5px;
+    display:inline-block;
+    background: rgb(255,255,136); /* Old browsers */
+    background: -moz-linear-gradient(-45deg, rgba(255,255,136,1) 77%, rgba(255,255,214,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right bottom, color-stop(77%,rgba(255,255,136,1)), color-stop(100%,rgba(255,255,214,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(-45deg, rgba(255,255,136,1) 77%,rgba(255,255,214,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(-45deg, rgba(255,255,136,1) 77%,rgba(255,255,214,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(-45deg, rgba(255,255,136,1) 77%,rgba(255,255,214,1) 100%); /* IE10+ */
+    background: linear-gradient(-45deg, rgba(255,255,136,1) 77%,rgba(255,255,214,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffff88', endColorstr='#ffff88',GradientType=0 ); /* IE6-9 fallback on horizontal gradient */
+}
+
+.postit:after {
+    content: "";
+    position:absolute;
+    z-index:-1;
+    right:-0px; bottom:20px;
+    width:200px;
+    height: 25px;
+    background: rgba(0, 0, 0, 0.2);
+    box-shadow:2px 15px 5px rgba(0, 0, 0, 0.40);
+    -moz-transform: matrix(-1, -0.1, 0, 1, 0, 0);
+    -webkit-transform: matrix(-1, -0.1, 0, 1, 0, 0);
+    -o-transform: matrix(-1, -0.1, 0, 1, 0, 0);
+    -ms-transform: matrix(-1, -0.1, 0, 1, 0, 0);
+    transform: matrix(-1, -0.1, 0, 1, 0, 0);
+}
+
+.top-bar-location {
+    background-color: rgba(0,0,0,0.1);
+    position: fixed;
+    top: 50px;
+    height: 20px;
+    width: 100%;
+    left: 0px;
+    z-index: 9999;
+    padding: 1px;
+    padding-left: 22px;
+    padding-right: 22px;
+    font-size: 14px;
+    color: #000000;
+}
+
+.close-card {
+    position: fixed;
+    right: 31px;
+    top: 65px;
+    background-color: #e0e0e0;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    z-index: 9999;
+    color: #bp-acACAC;
+    font-size: 20px;
+    cursor: pointer;
+    text-align: center;
+    font-family: bariol_boldbold;
+}
+
+.close-card:hover {
+    color: #000000;
+}
+
+table, th, td
+{
+    font-size: 14px;
+    border: 1px solid #E0E0E0;
+    border-collapse: collapse;
+
+}
+
+th {
+    background-color: #e6e9e8;
+    padding: 5px;
+    text-align: left;
+
+}
+
+td {
+    padding: 5px;
+}
+
+.bp-autocomplete-highlight {
+    font-weight:bold;
+    color: #0000FF;
+}
+</style>
+<!-- autocomplete-->
+<script>
+/**
+ Copyright (c) 2014 BrightPoint Consulting, Inc.
+
+ Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation
+ files (the "Software"), to deal in the Software without
+ restriction, including without limitation the rights to use,
+ copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the
+ Software is furnished to do so, subject to the following
+ conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+function autocomplete(parent) {
+    var _data=null,
+        _delay= 0,
+        _selection,
+        _margin = {top: 30, right: 10, bottom: 50, left: 80},
+        __width = 420,
+        __height = 420,
+        _placeHolder = "Search",
+        _width,
+        _height,
+        _matches,
+        _searchTerm,
+        _lastSearchTerm,
+        _currentIndex,
+        _keys,
+        _selectedFunction=defaultSelected;
+        _minLength = 1,
+        _dataField = "dataField",
+        _labelField = "labelField";
+    _selection=d3.select(parent);
+    function component() {
+        _selection.each(function (data) {
+            // Select the svg element, if it exists.
+            var container = d3.select(this).select("#bp-ac").data([data]);
+            var enter = container.enter()
+                    .append("div")
+                    .attr("id","bp-ac")
+                    .attr("class","bp-ac")
+                    .append("div")
+                    .attr("class","padded-row")
+                    .attr("class","padded-row")
+                    .append("div")
+                    .attr("style","bp-autocomplete-holder");
+            container.attr("width", __width)
+                .attr("height", __height);
+            var input = enter.append("input")
+                        .attr("class", "form-control")
+                        .attr("placeholder",_placeHolder)
+                        .attr("type","text")
+                        .on("keyup",onKeyUp);
+            var dropDown=enter.append("div").attr("class","bp-autocomplete-dropdown");
+            var searching=dropDown.append("div").attr("class","bp-autocomplete-searching").text("Searching ...");
+            hideSearching();
+            hideDropDown();
+            function onKeyUp() {
+                _searchTerm=input.node().value;
+                var e=d3.event;
+                if (!(e.which == 38 || e.which == 40 || e.which == 13)) {
+                    if (!_searchTerm || _searchTerm == "") {
+                        showSearching("No results");
+                    }
+                    else if (isNewSearchNeeded(_searchTerm,_lastSearchTerm)) {
+                        _lastSearchTerm=_searchTerm;
+                        _currentIndex=-1;
+                        _results=[];
+                        showSearching();
+                        search();
+                        processResults();
+                        if (_matches.length == 0) {
+                            showSearching("No results");
+                        }
+                        else {
+                            hideSearching();
+                            showDropDown();
+                        }
+                    }
+                }
+                else {
+                    e.preventDefault();
+                }
+            }
+            function processResults() {
+                var results=dropDown.selectAll(".bp-autocomplete-row").data(_matches, function (d) {
+                    return d[_dataField];});
+                results.enter()
+                    .append("div").attr("class","bp-autocomplete-row")
+                    .on("click",function (d,i) { row_onClick(d); })
+                    .append("div").attr("class","bp-autocomplete-title")
+                    .html(function (d) {
+                        var re = new RegExp(_searchTerm, 'i');
+                        var strPart = d[_dataField].match(re)[0];
+                        return d[_dataField].replace(re, "<span class='bp-autocomplete-highlight'>" + strPart + "</span>");
+                    });
+
+                results.exit().remove();
+                //Update results
+                results.select(".bp-autocomplete-title")
+                    .html(function (d,i) {
+                        var re = new RegExp(_searchTerm, 'i');
+                        var strPart = _matches[i][_dataField].match(re);
+                        if (strPart) {
+                            strPart = strPart[0];
+                            return _matches[i][_dataField].replace(re, "<span class='bp-autocomplete-highlight'>" + strPart + "</span>");
+                        }
+                    });
+            }
+            function search() {
+                var str=_searchTerm;
+                console.log("searching on " + _searchTerm);
+                console.log("-------------------");
+
+                if (str.length >= _minLength) {
+                    _matches = [];
+                    for (var i = 0; i < _keys.length; i++) {
+                        var match = false;
+                        match = match || (_keys[i][_dataField].toLowerCase().indexOf(str.toLowerCase()) >= 0);
+                        if (match) {
+                            _matches.push(_keys[i]);
+                            //console.log("matches " + _keys[i][_dataField]);
+                        }
+                    }
+                }
+            }
+            function row_onClick(d) {
+                hideDropDown();
+                input.node().value= d[_dataField];
+                _selectedFunction(d);
+            }
+            function isNewSearchNeeded(newTerm, oldTerm) {
+                return newTerm.length >= _minLength && newTerm != oldTerm;
+            }
+            function hideSearching() {
+                searching.style("display","none");
+            }
+            function hideDropDown() {
+                dropDown.style("display","none");
+            }
+            function showSearching(value) {
+                searching.style("display","block");
+                searching.text(value);
+            }
+            function showDropDown() {
+                dropDown.style("display","block");
+            }
+        });
+    }
+    function measure() {
+        _width=__width - _margin.right - _margin.left;
+        _height=__height - _margin.top - _margin.bottom;
+    }
+    function defaultSelected(d) {
+        console.log(d[_dataField] + " selected");
+    }
+    component.render = function() {
+        measure();
+        component();
+        return component;
+    }
+    component.keys = function (_) {
+        if (!arguments.length) return _keys;
+        _keys = _;
+        return component;
+    }
+    component.dataField = function (_) {
+        if (!arguments.length) return _dataField;
+        _dataField = _;
+        return component;
+    }
+    component.labelField = function (_) {
+        if (!arguments.length) return _labelField;
+        _labelField = _;
+        return component;
+    }
+    component.margin = function(_) {
+        if (!arguments.length) return _margin;
+        _margin = _;
+        measure();
+        return component;
+    };
+    component.width = function(_) {
+        if (!arguments.length) return __width;
+        __width = _;
+        measure();
+        return component;
+    };
+    component.height = function(_) {
+        if (!arguments.length) return __height;
+        __height = _;
+        measure();
+        return component;
+    };
+    component.delay = function(_) {
+        if (!arguments.length) return _delay;
+        _delay = _;
+        return component;
+    };
+    component.keys = function(_) {
+        if (!arguments.length) return _keys;
+        _keys = _;
+        return component;
+    };
+    component.placeHolder = function(_) {
+        if (!arguments.length) return _placeHolder;
+        _placeHolder = _;
+        return component;
+    };
+    component.onSelected = function(_) {
+        if (!arguments.length) return _selectedFunction;
+        _selectedFunction = _;
+        return component;
+    };
+    return component;
+}
+</script>
+<body>
+
+ <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Cognitive Atlas Tagging</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="http://www.cognitiveatlas.org" target="_blank">CA</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+          </form>
+        </div>
+      </div>  
+</nav>
+
+  
+<h3 id="title" style="padding-top: 70px; padding-bottom:10px; padding-left:5px"></h3>
+<div id="tasks" style="width:100%; height:100%;"></div>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+
+// Here is the brainspell article
+article = {
+"Title":"Separating brain regions involved in internally guided and visual feedback control of moving effectors: an event-related fMRI study.",
+"Reference":"Ogawa K, Inui T, Sugio T (2006) Neuroimage 32(4):1760-70",
+"Abstract":"Online visual information of moving effectors plays important roles in visually guided movements. The present study used event-related functional resonance imaging to temporally separate neural activity associated with internally guided and visual feedback control of moving effectors. Using a cursor controlled by a computer mouse, participants traced curved lines on a screen. During this movement, vision of the moving cursor was occluded after tracing had begun and then was restored after variable intervals. The results showed that when visual feedback was unavailable, bilateral activation was significantly greater in the basal ganglia, thalamus, premotor cortex and mesial motor areas, peaking at the presupplementary motor area (pre-SMA). In contrast, when visual feedback was available, significantly greater activation was observed bilaterally in the posterior parietal cortex (PPC) and cerebellum and in the middle and inferior frontal gyri and occipito-temporal cortex in the right hemisphere. Pre-SMA activity was significantly negatively correlated with tracing error when visual feedback was unavailable. In contrast, right PPC activation showed a significant positive correlation with tracing error after visual feedback became available. These findings suggest that the pre-SMA is involved in internally guided movements in the absence of visual feedback, and that the PPC is related to visual feedback control by evaluating online visuomotor error. The current study clarifies the different functional roles of fronto-parietal and cerebellum circuits subserving visually guided movements regarding visual feedback control of effectors.",
+"PMID":"16863694",
+"DOI":"10.1016/j.neuroimage.2006.05.012",
+"NeuroSynthID":"861",
+"Metadata":"{\"space\":\"MNI\",\"meshHeadings\":[{\"name\":\"Adult\",\"majorTopic\":\"N\"},{\"name\":\"Brain Mapping\",\"majorTopic\":\"N\"},{\"name\":\"Evoked Potentials\",\"majorTopic\":\"N\"},{\"name\":\"Feedback, Psychological\",\"majorTopic\":\"N\"},{\"name\":\"Female\",\"majorTopic\":\"N\"},{\"name\":\"Humans\",\"majorTopic\":\"N\"},{\"name\":\"Magnetic Resonance Imaging\",\"majorTopic\":\"N\"},{\"name\":\"Male\",\"majorTopic\":\"N\"},{\"name\":\"Motion Perception\",\"majorTopic\":\"N\"},{\"name\":\"Photic Stimulation\",\"majorTopic\":\"N\"},{\"name\":\"Psychomotor Performance\",\"majorTopic\":\"N\"},{\"name\":\"Visual Perception\",\"majorTopic\":\"N\"}]}",
+"Experiments":"[{\"title\":\"\",\"caption\":\"\",\"locations\":[]},{\"title\":\"\",\"caption\":\"\",\"locations\":[\"-4,-16,1\",\"-26,-2,2\",\"26,2,4\",\"51,5,31\",\"8,8,51\",\"-53,6,13\",\"10,18,43\",\"-14,-5,54\",\"-28,-78,-5\",\"-50,-19,43\",\"-40,-26,23\",\"0,-25,-31\",\"-36,-62,-34\",\"-40,-73,-18\",\"59,-54,8\",\"46,-77,15\",\"-12,-35,72\",\"22,-67,-29\",\"44,-40,57\",\"48,-65,22\",\"38,30,42\",\"38,24,45\",\"59,-47,34\",\"46,37,-5\",\"-55,-43,39\"]},{\"title\":\"\",\"caption\":\"\",\"locations\":[\"-4,8,53\",\"-32,-17,56\",\"44,-38,57\"]}]"
+}
+
+// Here are the tasks
+tasks = [{"name":"Beery-Buktenica Developmental Test of Visual-Motor Integration","id":"http://www.cognitiveatlas.org/id/trm_523f58d91f2c0"},
+{"name":"Rey Auditory Verbal Learning Task","id":"http://www.cognitiveatlas.org/id/trm_4da88ae0f2952"},
+{"name":"reappraisal task","id":"http://www.cognitiveatlas.org/id/trm_4f2420b042165"},
+{"name":"Braille Reading Task","id":"http://www.cognitiveatlas.org/id/trm_4c898a20eb254"},
+{"name":"Test of Early Language Development","id":"http://www.cognitiveatlas.org/id/trm_527138126fb20"},
+{"name":"NIH Toolbox 2-Minute Walk Endurance Test","id":"http://www.cognitiveatlas.org/id/trm_50eb69a57bc96"},
+{"name":"Hungry Donkey Task","id":"http://www.cognitiveatlas.org/id/trm_50b40bca8cf83"},
+{"name":"letter fluency test ","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949b0e"},
+{"name":"word attack","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949f2f"},
+{"name":"passive viewing","id":"http://www.cognitiveatlas.org/id/trm_4c899211a965c"},
+{"name":"Symptom Checklist-90-Revised ","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949e5b"},
+{"name":"copying task","id":"http://www.cognitiveatlas.org/id/trm_4fbd2ac1cd035"},
+{"name":"Match to Sample Visual Search","id":"http://www.cognitiveatlas.org/id/trm_50f852c084fde"},
+{"name":"pantomime task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949c04"},
+{"name":"numerosity estimation task","id":"http://www.cognitiveatlas.org/id/trm_4f2457454e458"},
+{"name":"video games","id":"http://www.cognitiveatlas.org/id/trm_4c8a84d4c4157"},
+{"name":"digit cancellation task","id":"http://www.cognitiveatlas.org/id/trm_4da89077f19ae"},
+{"name":"reversal weather prediction","id":"http://www.cognitiveatlas.org/id/trm_5181fb7bf350b"},
+{"name":"Probabilistic classification task","id":"http://www.cognitiveatlas.org/id/trm_4cacf22a22d80"},
+{"name":"NIH Toolbox Standing Balance Test","id":"http://www.cognitiveatlas.org/id/trm_50eb54d78841b"},
+{"name":"Emotion Recognition Task","id":"http://www.cognitiveatlas.org/id/trm_50f734f86b11a"},
+{"name":"deductive reasoning task","id":"http://www.cognitiveatlas.org/id/trm_4c898b8c2d071"},
+{"name":"NIH Toolbox Hearing Handicap Inventory","id":"http://www.cognitiveatlas.org/id/trm_50f37767e2958"},
+{"name":"WAIS Picture Arrangement","id":"http://www.cognitiveatlas.org/id/trm_51070ae889d95"},
+{"name":"target detection task","id":"http://www.cognitiveatlas.org/id/trm_4f242499b8952"},
+{"name":"Glasgow Coma Scale","id":"http://www.cognitiveatlas.org/id/trm_4da890f978492"},
+{"name":"recitation/repetition (overt)","id":"http://www.cognitiveatlas.org/id/trm_4c8a8329cb8ff"},
+{"name":"Visual Analogue Scales","id":"http://www.cognitiveatlas.org/id/trm_50f7370ace495"},
+{"name":"Children's Communication Checklist","id":"http://www.cognitiveatlas.org/id/trm_5255c99be1e53"},
+{"name":"visuospatial cueing task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949ee9"},
+{"name":"length match task","id":"http://www.cognitiveatlas.org/id/trm_4fbd2b16e7aff"},
+{"name":"Visual Patterns Test","id":"http://www.cognitiveatlas.org/id/trm_4da886fc2bc46"},
+{"name":"syntactic discrimination","id":"http://www.cognitiveatlas.org/id/trm_4c8a842512a33"},
+{"name":"spatial delayed response task","id":"http://www.cognitiveatlas.org/id/trm_4dadbe225bdf1"},
+{"name":"rhyme verification task","id":"http://www.cognitiveatlas.org/id/trm_4d949c5b0e380"},
+{"name":"Autism Diagnostic Interview - Revised","id":"http://www.cognitiveatlas.org/id/trm_525d847e2bd0b"},
+{"name":"Early Social and Communication Scales","id":"http://www.cognitiveatlas.org/id/trm_4da8911e715e3"},
+{"name":"stop-change task","id":"http://www.cognitiveatlas.org/id/trm_4f2447dfa5947"},
+{"name":"test of variables of attention","id":"http://www.cognitiveatlas.org/id/trm_4da86cdbd9eeb"},
+{"name":"NIH Toolbox Oral Symbol Digit Test","id":"http://www.cognitiveatlas.org/id/trm_50eb461d446e1"},
+{"name":"heat sensitization/adaptation","id":"http://www.cognitiveatlas.org/id/trm_4e5662373bc89"},
+{"name":"continuous performance task","id":"http://www.cognitiveatlas.org/id/trm_4b4a537644d76"},
+{"name":"face monitor/discrimination","id":"http://www.cognitiveatlas.org/id/trm_4c898cb4ada49"},
+{"name":"capsaicin-evoked pain","id":"http://www.cognitiveatlas.org/id/trm_4e6a2f61b17b0"},
+{"name":"digit span task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949a0d"},
+{"name":"remember/know task","id":"http://www.cognitiveatlas.org/id/trm_4da63146f12d7"},
+{"name":"logical reasoning task","id":"http://www.cognitiveatlas.org/id/trm_4f24154867d84"},
+{"name":"updating task","id":"http://www.cognitiveatlas.org/id/trm_4f242172aea5d"},
+{"name":"NIH Toolbox Visual Acuity Test","id":"http://www.cognitiveatlas.org/id/trm_50f37caf81432"},
+{"name":"Unified Parkinson's Disease Rating Scale","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949ece"},
+{"name":"Penn Word Memory Test","id":"http://www.cognitiveatlas.org/id/trm_50f998dcbfcc8"},
+{"name":"multi-attribute decision making task","id":"http://www.cognitiveatlas.org/id/trm_4f244fee7d195"},
+{"name":"reversal learning task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949d4e"},
+{"name":"object one-back task","id":"http://www.cognitiveatlas.org/id/trm_4ebd47b8bab6b"},
+{"name":"Aberrant Behavior Checklist - Community","id":"http://www.cognitiveatlas.org/id/trm_523c7a0a73cf5"},
+{"name":"backward digit span task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb94989b"},
+{"name":"block design test","id":"http://www.cognitiveatlas.org/id/trm_4b7497a289534"},
+{"name":"recall test","id":"http://www.cognitiveatlas.org/id/trm_4f2411c91ae5e"},
+{"name":"animal naming task","id":"http://www.cognitiveatlas.org/id/trm_4da88bd4412da"},
+{"name":"object decision task","id":"http://www.cognitiveatlas.org/id/trm_4fbd2c18e1dd9"},
+{"name":"contextual cueing task","id":"http://www.cognitiveatlas.org/id/trm_4f24492504ca0"},
+{"name":"object n-back","id":"http://www.cognitiveatlas.org/id/trm_4ebd477ab5a11"},
+{"name":"Change Detection Task","id":"http://www.cognitiveatlas.org/id/trm_5154906cbead5"},
+{"name":"Spielberger's State-Trait Anxiety Questionnaire","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949dfe"},
+{"name":"articulatory suppression task","id":"http://www.cognitiveatlas.org/id/trm_50f5822624e53"},
+{"name":"phoneme detection task","id":"http://www.cognitiveatlas.org/id/trm_4f24479b0db8f"},
+{"name":"phonological task","id":"http://www.cognitiveatlas.org/id/trm_4f241b751c5a0"},
+{"name":"artificial grammar learning task","id":"http://www.cognitiveatlas.org/id/trm_4f244a88013ae"},
+{"name":"Test of Language Development","id":"http://www.cognitiveatlas.org/id/trm_527143a263937"},
+{"name":"dual sensitization","id":"http://www.cognitiveatlas.org/id/trm_4e5e7ac84c2e5"},
+{"name":"Attention Switching Task","id":"http://www.cognitiveatlas.org/id/trm_4f241614d4a25"},
+{"name":"Adult Behavior Checklist","id":"http://www.cognitiveatlas.org/id/trm_523ca67b786d5"},
+{"name":"delayed recall test","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb9499ff"},
+{"name":"Edinburgh Handedness Inventory","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949a41"},
+{"name":"Fagerstrom Test for Nicotine Dependence","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949a78"},
+{"name":"operant task","id":"http://www.cognitiveatlas.org/id/trm_50240f06af135"},
+{"name":"letter comparison task","id":"http://www.cognitiveatlas.org/id/trm_4da86c8bb3b04"},
+{"name":"Parrott Scale","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949ce9"},
+{"name":"letter n-back task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949b1c"},
+{"name":"Autism Spectrum Quotient","id":"http://www.cognitiveatlas.org/id/trm_51d6fe3f3942f"},
+{"name":"directed forgetting task","id":"http://www.cognitiveatlas.org/id/trm_4da87f383435b"},
+{"name":"Expressive Vocabulary Test","id":"http://www.cognitiveatlas.org/id/trm_52602e2e0c43b"},
+{"name":"Morris water maze","id":"http://www.cognitiveatlas.org/id/trm_4da890a9bd7a3"},
+{"name":"zoo map test","id":"http://www.cognitiveatlas.org/id/trm_4da89089ce0af"},
+{"name":"living-nonliving task","id":"http://www.cognitiveatlas.org/id/trm_4f24258b51e2c"},
+{"name":"Wason card selection task","id":"http://www.cognitiveatlas.org/id/trm_4f2449bdcb0b1"},
+{"name":"passive avoidance task","id":"http://www.cognitiveatlas.org/id/trm_4f241fd47f16b"},
+{"name":"immediate recall test","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949abc"},
+{"name":"selective attention task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949d76"},
+{"name":"semantic classification task","id":"http://www.cognitiveatlas.org/id/trm_4f2412d4c3b88"},
+{"name":"paired associate recall","id":"http://www.cognitiveatlas.org/id/trm_4c8991e6e8597"},
+{"name":"parity judgment task","id":"http://www.cognitiveatlas.org/id/trm_4f24572cb42e4"},
+{"name":"scene recognition task","id":"http://www.cognitiveatlas.org/id/trm_4da6327154fd4"},
+{"name":"Wechsler Adult Intelligence Scale-Revised","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949f04"},
+{"name":"letter case judgment task","id":"http://www.cognitiveatlas.org/id/trm_4f241001dfcee"},
+{"name":"Positive and Negative Affect Scale","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949d09"},
+{"name":"recency judgment task","id":"http://www.cognitiveatlas.org/id/trm_4f241fb95918f"},
+{"name":"go/no-go task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949a93"},
+{"name":"chewing/swallowing","id":"http://www.cognitiveatlas.org/id/trm_4c898a8fd3afb"},
+{"name":"spatial span test","id":"http://www.cognitiveatlas.org/id/trm_4da86b539924c"},
+{"name":"dual-task weather prediction","id":"http://www.cognitiveatlas.org/id/trm_4ebc98cc77e7b"},
+{"name":"subjective emotional picture discrimination","id":"http://www.cognitiveatlas.org/id/trm_4c8a840d6f969"},
+{"name":"non-painful thermal stimulation","id":"http://www.cognitiveatlas.org/id/trm_4c89910b7f8bc"},
+{"name":"size match task","id":"http://www.cognitiveatlas.org/id/trm_4fbd2af083332"},
+{"name":"visual alignment task ","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949edb"},
+{"name":"micturition task","id":"http://www.cognitiveatlas.org/id/trm_4c89909cc1f33"},
+{"name":"Posner cueing task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949d17"},
+{"name":"spelling task","id":"http://www.cognitiveatlas.org/id/trm_4f24135453d65"},
+{"name":"Peabody Picture Vocabulary Test","id":"http://www.cognitiveatlas.org/id/trm_5266bebe14d2e"},
+{"name":"Brixton Spatial Anticipation Test","id":"http://www.cognitiveatlas.org/id/trm_4da88c5302e06"},
+{"name":"letter naming task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949b2b"},
+{"name":"Structured Clinical Interview for Diagnostic and Statistical Manual of Mental Disorders (DSM-IV) Axis I Disorder","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949e35"},
+{"name":"single-task weather prediction ","id":"http://www.cognitiveatlas.org/id/trm_4ebc728326a13"},
+{"name":"Tower of Hanoi","id":"http://www.cognitiveatlas.org/id/trm_4da87e7282f92"},
+{"name":"NIH Toolbox Words-in Noise Test","id":"http://www.cognitiveatlas.org/id/trm_50eb0a01bfd05"},
+{"name":"Stroop task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949e27"},
+{"name":"classification probe without feedback","id":"http://www.cognitiveatlas.org/id/trm_4ebc9d2e397f2"},
+{"name":"response mapping task","id":"http://www.cognitiveatlas.org/id/trm_4da88b3b0cbcc"},
+{"name":"visual attention task","id":"http://www.cognitiveatlas.org/id/trm_4c8a84f20dde2"},
+{"name":"Raven's Advanced Progressive Matrices","id":"http://www.cognitiveatlas.org/id/trm_4f24211a03b07"},
+{"name":"Test of Word Reading Efficiency","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949ea5"},
+{"name":"pitch/monitor discrimination","id":"http://www.cognitiveatlas.org/id/trm_4c89924414c69"},
+{"name":"embedded figures test","id":"http://www.cognitiveatlas.org/id/trm_4b749b8829eee"},
+{"name":"short-term memory task","id":"http://www.cognitiveatlas.org/id/trm_4f24239cc239e"},
+{"name":"Brief Symptom Inventory","id":"http://www.cognitiveatlas.org/id/trm_52405b6f7ebe9"},
+{"name":"motor sequencing task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949bbf"},
+{"name":"NIH Toolbox Oral Reading Recognition Test","id":"http://www.cognitiveatlas.org/id/trm_50eb3b2d1de11"},
+{"name":"film viewing","id":"http://www.cognitiveatlas.org/id/trm_4c898da401420"},
+{"name":"NIH Toolbox Odor Identification Test","id":"http://www.cognitiveatlas.org/id/trm_50f383e76e03b"},
+{"name":"Differential Ability Scales","id":"http://www.cognitiveatlas.org/id/trm_5272806688e63"},
+{"name":"Simon task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949dbb"},
+{"name":"intradimensional shift task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949ad7"},
+{"name":"reading (overt)","id":"http://www.cognitiveatlas.org/id/trm_4c8a82eeaa58f"},
+{"name":"global-local task","id":"http://www.cognitiveatlas.org/id/trm_4f241d7adf14e"},
+{"name":"object working memory task","id":"http://www.cognitiveatlas.org/id/trm_4f2421c391b83"},
+{"name":"MicroCog","id":"http://www.cognitiveatlas.org/id/trm_4b9568b2865c2"},
+{"name":"divided auditory attention","id":"http://www.cognitiveatlas.org/id/trm_4c898bbab4fd4"},
+{"name":"meditation task","id":"http://www.cognitiveatlas.org/id/trm_4fb4175126374"},
+{"name":"Space Fortress","id":"http://www.cognitiveatlas.org/id/trm_50df1c0d946b8"},
+{"name":"Space Fortress with Oddball","id":"http://www.cognitiveatlas.org/id/trm_50df1dd534ff2"},
+{"name":"Stanford-Binet Intelligence Scales","id":"http://www.cognitiveatlas.org/id/trm_526af65b16c82"},
+{"name":"oculomotor delayed response","id":"http://www.cognitiveatlas.org/id/trm_4c3e0add96550"},
+{"name":"pyramids and palm trees task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949d32"},
+{"name":"reading span task","id":"http://www.cognitiveatlas.org/id/trm_4c40d168898db"},
+{"name":"PDD Behavior Inventory","id":"http://www.cognitiveatlas.org/id/trm_5262d903ae91d"},
+{"name":"delayed nonmatch to sample task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb9499f1"},
+{"name":"analogical reasoning task","id":"http://www.cognitiveatlas.org/id/trm_4f244f0286947"},
+{"name":"listening span task","id":"http://www.cognitiveatlas.org/id/trm_4c40d1d16071e"},
+{"name":"apparent verticality judgment","id":"http://www.cognitiveatlas.org/id/trm_502ad907e3299"},
+{"name":"NPU-threat test","id":"http://www.cognitiveatlas.org/id/trm_502420a682976"},
+{"name":"action imitation task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb94981d"},
+{"name":"visual pursuit/tracking","id":"http://www.cognitiveatlas.org/id/trm_4c8a85534241d"},
+{"name":"gender discrimination task","id":"http://www.cognitiveatlas.org/id/trm_4f241c8d4a75c"},
+{"name":"Vineland Adaptive Behavior Scales","id":"http://www.cognitiveatlas.org/id/trm_52717a95a3b03"},
+{"name":"color naming task","id":"http://www.cognitiveatlas.org/id/trm_4f244c1f6b53f"},
+{"name":"Motor Screening Task","id":"http://www.cognitiveatlas.org/id/trm_50f72e93ea9e3"},
+{"name":"Symbol Counter Task","id":"http://www.cognitiveatlas.org/id/trm_50b66c50ca2ac"},
+{"name":"temporal discounting task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949e98"},
+{"name":"phasic pain stimulation","id":"http://www.cognitiveatlas.org/id/trm_4e6114e7b1ff2"},
+{"name":"Reynell Developmental Language Scales","id":"http://www.cognitiveatlas.org/id/trm_4da8914987ee2"},
+{"name":"AX-CPT task","id":"http://www.cognitiveatlas.org/id/trm_4c40d2a93ea15"},
+{"name":"Communication and Symbolic Behavior Scales Development Profile","id":"http://www.cognitiveatlas.org/id/trm_52718631bc934"},
+{"name":"Porteus maze test","id":"http://www.cognitiveatlas.org/id/trm_4da87fdd7820e"},
+{"name":"counting Stroop task","id":"http://www.cognitiveatlas.org/id/trm_4da631be60291"},
+{"name":"Counting/Calculation","id":"http://www.cognitiveatlas.org/id/trm_4c898b02722d2"},
+{"name":"complex span test","id":"http://www.cognitiveatlas.org/id/trm_4da86ad02b3ea"},
+{"name":"semantic fluency task","id":"http://www.cognitiveatlas.org/id/trm_4f241bd52b509"},
+{"name":"paired associate learning","id":"http://www.cognitiveatlas.org/id/trm_4da88a2a63d97"},
+{"name":"NIH Toolbox Positive Affect Survey","id":"http://www.cognitiveatlas.org/id/trm_50f3bc06cae36"},
+{"name":"stop signal task with pseudo word naming","id":"http://www.cognitiveatlas.org/id/trm_5181f863d24f4"},
+{"name":"categorization task","id":"http://www.cognitiveatlas.org/id/trm_4f24112057e90"},
+{"name":"problem solving task","id":"http://www.cognitiveatlas.org/id/trm_4f241325579c6"},
+{"name":"facial recognition task","id":"http://www.cognitiveatlas.org/id/trm_5090b32d6b376"},
+{"name":"delayed memory task","id":"http://www.cognitiveatlas.org/id/trm_4fba85a597ca9"},
+{"name":"why/how task","id":"http://www.cognitiveatlas.org/id/trm_53c4465b0466f"},
+{"name":"semantic task","id":"http://www.cognitiveatlas.org/id/trm_4f241b50caaf7"},
+{"name":"WISC-R Mazes","id":"http://www.cognitiveatlas.org/id/trm_4b86c55f3d5df"},
+{"name":"tactile monitor/discrimination","id":"http://www.cognitiveatlas.org/id/trm_4c8a843d8d352"},
+{"name":"semantic memory task","id":"http://www.cognitiveatlas.org/id/trm_4f241c0737cc0"},
+{"name":"deception task","id":"http://www.cognitiveatlas.org/id/trm_4c898b4b463aa"},
+{"name":"NIH Toolbox Dynamic Visual Acuity Test","id":"http://www.cognitiveatlas.org/id/trm_50f38098952cb"},
+{"name":"mixed gambles task","id":"http://www.cognitiveatlas.org/id/trm_4cacee4a1d875"},
+{"name":"pain monitor/discrimination task","id":"http://www.cognitiveatlas.org/id/trm_4c8991c5beb0a"},
+{"name":"Mini Mental State Examination","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949bb1"},
+{"name":"false belief task","id":"http://www.cognitiveatlas.org/id/trm_4f2456027809f"},
+{"name":"prospective memory task","id":"http://www.cognitiveatlas.org/id/trm_4f244860c702c"},
+{"name":"simple reaction time task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949dc8"},
+{"name":"CatBat task","id":"http://www.cognitiveatlas.org/id/trm_4da88bff0507c"},
+{"name":"alternating runs paradigm","id":"http://www.cognitiveatlas.org/id/trm_4da88b8b60ffb"},
+{"name":"source memory test","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949dd6"},
+{"name":"phonological discrimination","id":"http://www.cognitiveatlas.org/id/trm_4c89922cb6402"},
+{"name":"autobiographical memory task","id":"http://www.cognitiveatlas.org/id/trm_4f244d2a54e27"},
+{"name":"California Verbal Learning Test-II","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949900"},
+{"name":"WAIS Similarities","id":"http://www.cognitiveatlas.org/id/trm_510703e93367e"},
+{"name":"NIH Toolbox Hearing Threshold Test","id":"http://www.cognitiveatlas.org/id/trm_50f374718a91c"},
+{"name":"visually guided saccade task","id":"http://www.cognitiveatlas.org/id/trm_4f24108555294"},
+{"name":"episodic recall","id":"http://www.cognitiveatlas.org/id/trm_4c898c8bf1b4f"},
+{"name":"Trail Making Test A and B","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949ec0"},
+{"name":"random number generation task","id":"http://www.cognitiveatlas.org/id/trm_4f2417d4a63ae"},
+{"name":"color-discrimination task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb9499b8"},
+{"name":"Cambridge Neuropsychological Test Automated Battery ","id":"http://www.cognitiveatlas.org/id/trm_4da880ff8fd4a"},
+{"name":"Balloon Analogue Risk Task (BART)","id":"http://www.cognitiveatlas.org/id/trm_4d559bcd67c18"},
+{"name":"word generation task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949f3d"},
+{"name":"picture-word Stroop test","id":"http://www.cognitiveatlas.org/id/trm_4dadbfd771a54"},
+{"name":"Hayling sentence completion test","id":"http://www.cognitiveatlas.org/id/trm_4da88c904862b"},
+{"name":"International Affective Picture System","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949aca"},
+{"name":"social judgment task","id":"http://www.cognitiveatlas.org/id/trm_4f2453ce33f16"},
+{"name":"theory of mind task","id":"http://www.cognitiveatlas.org/id/trm_4c8a8467304e2"},
+{"name":"same-different task","id":"http://www.cognitiveatlas.org/id/trm_4b75ea4ddd896"},
+{"name":"Conners Comprehensive Behavior Rating Scales","id":"http://www.cognitiveatlas.org/id/trm_524b563fb87c8"},
+{"name":"task-switching ","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949e8a"},
+{"name":"Autism Diagnostic Observation Schedule","id":"http://www.cognitiveatlas.org/id/trm_4da891a546d8c"},
+{"name":"bimanual coordination task","id":"http://www.cognitiveatlas.org/id/trm_4f244f997615c"},
+{"name":"Kanizsa figures","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949b00"},
+{"name":"thermal grill illusion","id":"http://www.cognitiveatlas.org/id/trm_4e5fcd75efb58"},
+{"name":"psychophysics task","id":"http://www.cognitiveatlas.org/id/trm_502985b4baaed"},
+{"name":"Benton Facial Recognition Test","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb9498bc"},
+{"name":"NIH Toolbox Picture Vocabulary Test","id":"http://www.cognitiveatlas.org/id/trm_50eb0dc6668e1"},
+{"name":"verbal fluency task","id":"http://www.cognitiveatlas.org/id/trm_4f240f1c740da"},
+{"name":"Conners 3rd Edition","id":"http://www.cognitiveatlas.org/id/trm_525c4cb94bfff"},
+{"name":"Wechsler Memory Scale (IV)","id":"http://www.cognitiveatlas.org/id/trm_4da63357e4999"},
+{"name":"Partial Report Procedure","id":"http://www.cognitiveatlas.org/id/trm_50b65ef129e23"},
+{"name":"Preschool Language Scale","id":"http://www.cognitiveatlas.org/id/trm_5266bc6473fd8"},
+{"name":"cyberball task","id":"http://www.cognitiveatlas.org/id/trm_4f24189031a4a"},
+{"name":"word identification","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949f4a"},
+{"name":"fixation task","id":"http://www.cognitiveatlas.org/id/trm_4c898f72228f3"},
+{"name":"word one-back task","id":"http://www.cognitiveatlas.org/id/trm_4ebd482eba5b1"},
+{"name":"Children's Psychiatric Rating Scale","id":"http://www.cognitiveatlas.org/id/trm_525c56680c13c"},
+{"name":"mechanical stimulation","id":"http://www.cognitiveatlas.org/id/trm_4e5d07565b68e"},
+{"name":"Children's Memory Scale","id":"http://www.cognitiveatlas.org/id/trm_52167db323438"},
+{"name":"word stem completion (covert)","id":"http://www.cognitiveatlas.org/id/trm_4c8a858da803d"},
+{"name":"Broader Phenotype Autism Symptom Scale","id":"http://www.cognitiveatlas.org/id/trm_524055ac4fecf"},
+{"name":"emotional regulation task","id":"http://www.cognitiveatlas.org/id/trm_4da890594742a"},
+{"name":"matching pennies game ","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949b46"},
+{"name":"symbol-digit substitution","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949e44"},
+{"name":"whistling","id":"http://www.cognitiveatlas.org/id/trm_4c8a8575d1e55"},
+{"name":"Kaufman Brief Intelligence Test","id":"http://www.cognitiveatlas.org/id/trm_529ce6ecb35f8"},
+{"name":"sequential shape matching","id":"http://www.cognitiveatlas.org/id/trm_4e8a0dd29ec7b"},
+{"name":"memory guided saccade task","id":"http://www.cognitiveatlas.org/id/trm_4f2457d94fd93"},
+{"name":"lexical decision task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949b38"},
+{"name":"attention networks test","id":"http://www.cognitiveatlas.org/id/trm_4da6304c9aa23"},
+{"name":"abstract/concrete task","id":"http://www.cognitiveatlas.org/id/trm_4f24126c22011"},
+{"name":"tonic pain stimulation","id":"http://www.cognitiveatlas.org/id/trm_4e6112759926e"},
+{"name":"tone monitor/discrimination","id":"http://www.cognitiveatlas.org/id/trm_4c8a84825c4e4"},
+{"name":"Birmingham Object Recognition Battery","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb9498ce"},
+{"name":"Uznadze haptic illusion task","id":"http://www.cognitiveatlas.org/id/trm_4da88ec6735ad"},
+{"name":"NIH Toolbox Pain Interference Survey","id":"http://www.cognitiveatlas.org/id/trm_50f3862422509"},
+{"name":"Tower of London","id":"http://www.cognitiveatlas.org/id/trm_4da87e439c411"},
+{"name":"retrieval-induced forgetting task","id":"http://www.cognitiveatlas.org/id/trm_4da87f81bc2c8"},
+{"name":"ambiguous figure task","id":"http://www.cognitiveatlas.org/id/trm_502abd109f255"},
+{"name":"Social Responsiveness Scale","id":"http://www.cognitiveatlas.org/id/trm_5208fe678c652"},
+{"name":"pseudoword naming task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949d25"},
+{"name":"Boston Naming Test","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb9498ef"},
+{"name":"semantic decision task","id":"http://www.cognitiveatlas.org/id/trm_4f240cb09f8e5"},
+{"name":"span/supra-span test","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949de3"},
+{"name":"negative priming task","id":"http://www.cognitiveatlas.org/id/trm_4f244d64e45bc"},
+{"name":"mental arithmetic task","id":"http://www.cognitiveatlas.org/id/trm_4f24179122380"},
+{"name":"WAIS Object Assembly","id":"http://www.cognitiveatlas.org/id/trm_51071fc87a61f"},
+{"name":"orientation match task","id":"http://www.cognitiveatlas.org/id/trm_4fbd2b4bb165c"},
+{"name":"cups task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb9499d5"},
+{"name":"sequence recall/learning","id":"http://www.cognitiveatlas.org/id/trm_4c8a83cac75f5"},
+{"name":"audio-visual target detection task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949889"},
+{"name":"backward masking","id":"http://www.cognitiveatlas.org/id/trm_4a3fd79d09b6d"},
+{"name":"phonetic discrimination task","id":"http://www.cognitiveatlas.org/id/trm_4f2414a1bab77"},
+{"name":"AX-DPX","id":"http://www.cognitiveatlas.org/id/trm_515495b718cd6"},
+{"name":"letter number sequencing","id":"http://www.cognitiveatlas.org/id/trm_4c3e0a9576c3b"},
+{"name":"Cambridge Face Memory Test","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949912"},
+{"name":"NIH Toolbox Grip Strength Test","id":"http://www.cognitiveatlas.org/id/trm_50eb51c2cd9fe"},
+{"name":"psychological refractory period (PRP) paradigm","id":"http://www.cognitiveatlas.org/id/trm_51c453f64d2a6"},
+{"name":"semantic anomaly judgement task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949d84"},
+{"name":"inductive reasoning aptitude","id":"http://www.cognitiveatlas.org/id/trm_4d8a48e403c78"},
+{"name":"Implicit Association Task","id":"http://www.cognitiveatlas.org/id/trm_50b6660b1b847"},
+{"name":"Warrington's Face/Word Recognition Test","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949ef7"},
+{"name":"n-back task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949bcd"},
+{"name":"flexion/extension","id":"http://www.cognitiveatlas.org/id/trm_4c898fad429ed"},
+{"name":"operation span task","id":"http://www.cognitiveatlas.org/id/trm_4c40d10cd776e"},
+{"name":"Maudsley Obsessive Compulsive Inventory","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949b54"},
+{"name":"semantic relatedness task","id":"http://www.cognitiveatlas.org/id/trm_4f240d7664628"},
+{"name":"self-ordered pointing task","id":"http://www.cognitiveatlas.org/id/trm_4c40d325977f0"},
+{"name":"drawing","id":"http://www.cognitiveatlas.org/id/trm_4c898be57fcbc"},
+{"name":"Covert verb generation task","id":"http://www.cognitiveatlas.org/id/trm_5346927710e88"},
+{"name":"Joint Attention / Social and Nonsocial Orienting Task","id":"http://www.cognitiveatlas.org/id/trm_529ce04b778b6"},
+{"name":"NIH Toolbox 9-Hole Pegboard Dexterity Test","id":"http://www.cognitiveatlas.org/id/trm_50eb4d3d96ff8"},
+{"name":"grasping task","id":"http://www.cognitiveatlas.org/id/trm_4c898ff0bea97"},
+{"name":"orthographic task","id":"http://www.cognitiveatlas.org/id/trm_4f24250e0137e"},
+{"name":"Early Childhood Behavioral Questionnaire","id":"http://www.cognitiveatlas.org/id/trm_5298e7a465b41"},
+{"name":"overlapping figures task","id":"http://www.cognitiveatlas.org/id/trm_4fbd2b964d3ec"},
+{"name":"mirror reading task","id":"http://www.cognitiveatlas.org/id/trm_5176cf2c19e89"},
+{"name":"verbal working memory task","id":"http://www.cognitiveatlas.org/id/trm_4f2457a8b0bc8"},
+{"name":"California Verbal Learning Test","id":"http://www.cognitiveatlas.org/id/trm_4da6331cdeeb5"},
+{"name":"Stockings of Cambridge Task","id":"http://www.cognitiveatlas.org/id/trm_4da890cf99b9e"},
+{"name":"Social Communication Questionnaire","id":"http://www.cognitiveatlas.org/id/trm_521687032f822"},
+{"name":"finger tapping task","id":"http://www.cognitiveatlas.org/id/trm_4c898f079d05e"},
+{"name":"eating/drinking","id":"http://www.cognitiveatlas.org/id/trm_4c898c0786246"},
+{"name":"Behavioral Investment allocation strategy (BIAS)","id":"http://www.cognitiveatlas.org/id/trm_4d54b8361e93e"},
+{"name":"tone counting","id":"http://www.cognitiveatlas.org/id/trm_4ebc6a6b75ebf"},
+{"name":"extradimensional shift task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949a5d"},
+{"name":"Hooper visual organization test","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949aae"},
+{"name":"Behavioral Rating Inventory of Executive Function","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb9498ab"},
+{"name":"flashing checkerboard","id":"http://www.cognitiveatlas.org/id/trm_4c898f8f297ac"},
+{"name":"rest","id":"http://www.cognitiveatlas.org/id/trm_4c8a834779883"},
+{"name":"choice reaction time task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949934"},
+{"name":"stop signal task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949e1a"},
+{"name":"shadowing task","id":"http://www.cognitiveatlas.org/id/trm_4f2456932f11b"},
+{"name":"face-name association task","id":"http://www.cognitiveatlas.org/id/trm_4f2424cb392fc"},
+{"name":"Wechsler Adult Intelligence Scale - Revised","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949f12"},
+{"name":"temporal order judgment task","id":"http://www.cognitiveatlas.org/id/trm_4e31d69b7f422"},
+{"name":"WAIS Vocabulary","id":"http://www.cognitiveatlas.org/id/trm_5106f17025386"},
+{"name":"fame judgment task","id":"http://www.cognitiveatlas.org/id/trm_4f241fe40a950"},
+{"name":"sentence-picture matching task","id":"http://www.cognitiveatlas.org/id/trm_4f241e8a01052"},
+{"name":"block tapping test","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb9498df"},
+{"name":"PEBL Perceptual Vigilance Task (PPVT)","id":"http://www.cognitiveatlas.org/id/trm_50b55d8a6da00"},
+{"name":"gambling task","id":"http://www.cognitiveatlas.org/id/trm_4f24496a80587"},
+{"name":"navigation task","id":"http://www.cognitiveatlas.org/id/trm_4f241173868a3"},
+{"name":"word-picture verification task","id":"http://www.cognitiveatlas.org/id/trm_4b65e5e2ab3ca"},
+{"name":"living/nonliving judgment on mirror-reversed and plain-text words","id":"http://www.cognitiveatlas.org/id/trm_5176cf9d3d512"},
+{"name":"odd-even task","id":"http://www.cognitiveatlas.org/id/trm_4f2452adb7d23"},
+{"name":"continuous recognition paradigm","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb9499c7"},
+{"name":"delayed response task","id":"http://www.cognitiveatlas.org/id/trm_4dadbdd0b2b8c"},
+{"name":"WAIS Arithmetic","id":"http://www.cognitiveatlas.org/id/trm_5106f4dfe08b1"},
+{"name":"heat stimulation","id":"http://www.cognitiveatlas.org/id/trm_4e550887d92de"},
+{"name":"intermodal preferential looking paradigm","id":"http://www.cognitiveatlas.org/id/trm_4eb1f3a8ec119"},
+{"name":"naming (covert)","id":"http://www.cognitiveatlas.org/id/trm_4c8990c87035d"},
+{"name":"Expressive One Word-Picture Vocabulary Test","id":"http://www.cognitiveatlas.org/id/trm_5262c98a09546"},
+{"name":"position of gap match task","id":"http://www.cognitiveatlas.org/id/trm_4fbd2b6fd33c5"},
+{"name":"vibrotactile monitor/discrimination","id":"http://www.cognitiveatlas.org/id/trm_4c8a84afdd863"},
+{"name":"monetary incentive delay task","id":"http://www.cognitiveatlas.org/id/trm_4f23fc8c42d28"},
+{"name":"Cattell's Culture Fair Intelligence Test","id":"http://www.cognitiveatlas.org/id/trm_4da86c6808ddd"},
+{"name":"NIH Toolbox General Life Satisfaction Survey","id":"http://www.cognitiveatlas.org/id/trm_50f3c003327c4"},
+{"name":"rapid serial object transformation","id":"http://www.cognitiveatlas.org/id/trm_4b86dbcd8ff78"},
+{"name":"multisource interference task","id":"http://www.cognitiveatlas.org/id/trm_4f2419c4a1646"},
+{"name":"spatial n-back task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949df1"},
+{"name":"Early Development Interview (EDI)","id":"http://www.cognitiveatlas.org/id/trm_5298ed1336e43"},
+{"name":"Center for Epidemiologic Studies Depression Scale","id":"http://www.cognitiveatlas.org/id/trm_5258346e72223"},
+{"name":"Penn Conditional Exclusion Test","id":"http://www.cognitiveatlas.org/id/trm_50f9952c2311a"},
+{"name":"covert naming task","id":"http://www.cognitiveatlas.org/id/trm_4f240d346320c"},
+{"name":"WAIS-Information","id":"http://www.cognitiveatlas.org/id/trm_5106eae236c21"},
+{"name":"digit/symbol coding test","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949a25"},
+{"name":"Children's Yale-Brown Obsessive Compulsive Scale","id":"http://www.cognitiveatlas.org/id/trm_52602c143d3a9"},
+{"name":"imagined movement","id":"http://www.cognitiveatlas.org/id/trm_4c899005b11d5"},
+{"name":"olfactory monitoring/discrimination","id":"http://www.cognitiveatlas.org/id/trm_4c89912c79030"},
+{"name":"Halstead-Reitan Battery","id":"http://www.cognitiveatlas.org/id/trm_529911569b592"},
+{"name":"mental rotation task","id":"http://www.cognitiveatlas.org/id/trm_4c8990810541d"},
+{"name":"cold pressor test","id":"http://www.cognitiveatlas.org/id/trm_4e6a44ee854f8"},
+{"name":"attention bias","id":"http://www.cognitiveatlas.org/id/trm_50df0d8dc717b"},
+{"name":"Information Sampling Task","id":"http://www.cognitiveatlas.org/id/trm_50f73d557c967"},
+{"name":"conjunction search task","id":"http://www.cognitiveatlas.org/id/trm_4f24194bce29f"},
+{"name":"delay conditioning","id":"http://www.cognitiveatlas.org/id/trm_5023ef8eab626"},
+{"name":"orthographic discrimination","id":"http://www.cognitiveatlas.org/id/trm_4c89913f80802"},
+{"name":"dichotic listening task","id":"http://www.cognitiveatlas.org/id/trm_4da87e9c79847"},
+{"name":"Cambridge Gambling Task","id":"http://www.cognitiveatlas.org/id/trm_4d54b2cc0f943"},
+{"name":"contrast detection task","id":"http://www.cognitiveatlas.org/id/trm_502be67697201"},
+{"name":"rapid serial visual presentation task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949879"},
+{"name":"Penn Face Memory Test","id":"http://www.cognitiveatlas.org/id/trm_50f99e56117fe"},
+{"name":"nonword repetition task","id":"http://www.cognitiveatlas.org/id/trm_4da88b17b985b"},
+{"name":"recitation/repetition (covert)","id":"http://www.cognitiveatlas.org/id/trm_4c8a830dec136"},
+{"name":"encoding task","id":"http://www.cognitiveatlas.org/id/trm_4c898c33ee5f8"},
+{"name":"pavlovian conditioning task","id":"http://www.cognitiveatlas.org/id/trm_4c898acd1f28e"},
+{"name":"Rivermead Behavioural Memory Test","id":"http://www.cognitiveatlas.org/id/trm_4da8885b33375"},
+{"name":"reading (covert)","id":"http://www.cognitiveatlas.org/id/trm_4c8a82ba8a538"},
+{"name":"deterministic classification","id":"http://www.cognitiveatlas.org/id/trm_4e8dd3831f0cc"},
+{"name":"Comprehensive Test of Phonological Processing","id":"http://www.cognitiveatlas.org/id/trm_526027c99b726"},
+{"name":"word fluency test","id":"http://www.cognitiveatlas.org/id/trm_4da633dbb5817"},
+{"name":"word-picture matching task","id":"http://www.cognitiveatlas.org/id/trm_4f241ee9c4e37"},
+{"name":"Overt word repetition","id":"http://www.cognitiveatlas.org/id/trm_534690b0e9dc5"},
+{"name":"Incidental encoding task","id":"http://www.cognitiveatlas.org/id/trm_50df0dd9d0b6f"},
+{"name":"conditional stop signal task","id":"http://www.cognitiveatlas.org/id/trm_4cacf3fbc503b"},
+{"name":"NIH Toolbox List Sorting Working Memory Test","id":"http://www.cognitiveatlas.org/id/trm_50eb17385e9a6"},
+{"name":"syntactic task","id":"http://www.cognitiveatlas.org/id/trm_4f244a453522b"},
+{"name":"WAIS Comprehension","id":"http://www.cognitiveatlas.org/id/trm_5106f82530aff"},
+{"name":"risky gains task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949d5b"},
+{"name":"word stem completion (overt)","id":"http://www.cognitiveatlas.org/id/trm_4c8a85a4564b2"},
+{"name":"naming (overt)","id":"http://www.cognitiveatlas.org/id/trm_4c8990e187dc7"},
+{"name":"mentalizing task","id":"http://www.cognitiveatlas.org/id/trm_4f241ab50513b"},
+{"name":"NIH Toolbox 4-Meter Walk Gait Speed Test ","id":"http://www.cognitiveatlas.org/id/trm_50eb585f62f24"},
+{"name":"general knowledge task","id":"http://www.cognitiveatlas.org/id/trm_4f24237f2ed47"},
+{"name":"instrumental learning task","id":"http://www.cognitiveatlas.org/id/trm_4f2414059baa8"},
+{"name":"Loneliness Rating Scale","id":"http://www.cognitiveatlas.org/id/trm_529d087705bfa"},
+{"name":"synchrony judgment task","id":"http://www.cognitiveatlas.org/id/trm_4e31d031bc8c2"},
+{"name":"Eriksen flanker task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949a4f"},
+{"name":"Social Competence Questionnaire","id":"http://www.cognitiveatlas.org/id/trm_525c4a78089ad"},
+{"name":"Rey-Ostereith Complex Figure Test","id":"http://www.cognitiveatlas.org/id/trm_4da880396c76b"},
+{"name":"Wechsler Intelligence Scale for Children - Revised","id":"http://www.cognitiveatlas.org/id/trm_4da6338803ed2"},
+{"name":"Reaction Time","id":"http://www.cognitiveatlas.org/id/trm_50f84e8ab7af8"},
+{"name":"Sensory Profile","id":"http://www.cognitiveatlas.org/id/trm_526943e3cbaaf"},
+{"name":"writing task","id":"http://www.cognitiveatlas.org/id/trm_4c8a85c5c75eb"},
+{"name":"pursuit rotor task","id":"http://www.cognitiveatlas.org/id/trm_4da88b63787d6"},
+{"name":"Expressive One-Word Picture Vocabulary Test","id":"http://www.cognitiveatlas.org/id/trm_5298f15fe0fcf"},
+{"name":"dot pattern expectancy task","id":"http://www.cognitiveatlas.org/id/trm_4da86c2a70a7d"},
+{"name":"counterconditioning","id":"http://www.cognitiveatlas.org/id/trm_50240427b4c1b"},
+{"name":"Test of Adolescent and Adult Language","id":"http://www.cognitiveatlas.org/id/trm_52713c85c0bd2"},
+{"name":"face n-back task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949a6a"},
+{"name":"category fluency test","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949923"},
+{"name":"immediate memory task","id":"http://www.cognitiveatlas.org/id/trm_4fba857ad04ac"},
+{"name":"Clinical Evaluation of Language Fundamentals-3","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb9499a8"},
+{"name":"underlining test","id":"http://www.cognitiveatlas.org/id/trm_4b86c473a7166"},
+{"name":"electric stimulation","id":"http://www.cognitiveatlas.org/id/trm_4e68e08950157"},
+{"name":"choice task between risky and non-risky options","id":"http://www.cognitiveatlas.org/id/trm_4d55a2bbcfdff"},
+{"name":"WAIS Picture Completion","id":"http://www.cognitiveatlas.org/id/trm_5107067241007"},
+{"name":"color-word Stroop task","id":"http://www.cognitiveatlas.org/id/trm_4b1968619b00b"},
+{"name":"NIH Toolbox Picture Sequence Memory Test","id":"http://www.cognitiveatlas.org/id/trm_4da88cb222308"},
+{"name":"doors and people test","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949a33"},
+{"name":"Big Five Questionnaire","id":"http://www.cognitiveatlas.org/id/trm_523f5c17d7edb"},
+{"name":"Probabilistic gambling task","id":"http://www.cognitiveatlas.org/id/trm_4d54b61a14a14"},
+{"name":"object naming task","id":"http://www.cognitiveatlas.org/id/trm_4f2448d02d4d9"},
+{"name":"NIH Toolbox Vision-Related Quality of Life Survey","id":"http://www.cognitiveatlas.org/id/trm_50f37f231aa4c"},
+{"name":"Mullen Scales of Early Learning","id":"http://www.cognitiveatlas.org/id/trm_5262d6d7b2097"},
+{"name":"Tapping task","id":"http://www.cognitiveatlas.org/id/trm_534692ef3b5df"},
+{"name":"auditory temporal discrimination task","id":"http://www.cognitiveatlas.org/id/trm_4f240e7f989f8"},
+{"name":"mixed event-related probe","id":"http://www.cognitiveatlas.org/id/trm_4e8dd3dfd9fff"},
+{"name":"biological motion task","id":"http://www.cognitiveatlas.org/id/trm_4f245326e2eaf"},
+{"name":"spatial location/discrimination","id":"http://www.cognitiveatlas.org/id/trm_4c8a83f27ac55"},
+{"name":"stop signal task with letter naming","id":"http://www.cognitiveatlas.org/id/trm_5181f83b77fa4"},
+{"name":"Judgment of Line Orientation Task","id":"http://www.cognitiveatlas.org/id/trm_529ce3d22be3e"},
+{"name":"visual search task","id":"http://www.cognitiveatlas.org/id/trm_4f2447fe67fb9"},
+{"name":"acupuncture task","id":"http://www.cognitiveatlas.org/id/trm_4c8989e1f3df7"},
+{"name":"forward digit span task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949a85"},
+{"name":"NIH Toolbox Dimensional Change Card Sort Test","id":"http://www.cognitiveatlas.org/id/trm_50eb115b6c476"},
+{"name":"Wechsler Abbreviated Scale of Intelligence","id":"http://www.cognitiveatlas.org/id/trm_4b94affc43245"},
+{"name":"probabilistic reversal learning task","id":"http://www.cognitiveatlas.org/id/trm_4da6318f7381b"},
+{"name":"NIH Toolbox Pain Intensity Survey","id":"http://www.cognitiveatlas.org/id/trm_50f385a8269ce"},
+{"name":"music comprehension/production","id":"http://www.cognitiveatlas.org/id/trm_4c8990b07a037"},
+{"name":"criteria task","id":"http://www.cognitiveatlas.org/id/trm_512e7621189ad"},
+{"name":"Tobacco Craving Questionnaire","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949eb3"},
+{"name":"modified Erickson Scale of Communication Attitudes","id":"http://www.cognitiveatlas.org/id/trm_4da891d43240c"},
+{"name":"abstract/concrete judgment: bilingual","id":"http://www.cognitiveatlas.org/id/trm_4ebd44cd88360"},
+{"name":"Rapid Visual Information Processing","id":"http://www.cognitiveatlas.org/id/trm_50f8516279419"},
+{"name":"drawing from memory task","id":"http://www.cognitiveatlas.org/id/trm_4fbd2e5614028"},
+{"name":"matching familiar figures test","id":"http://www.cognitiveatlas.org/id/trm_4da87b8bf1511"},
+{"name":"Iowa Gambling Task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949ae5"},
+{"name":"rapid automatized naming test","id":"http://www.cognitiveatlas.org/id/trm_4b86c2e871b14"},
+{"name":"relational reasoning task","id":"http://www.cognitiveatlas.org/id/trm_4f2454dfca337"},
+{"name":"Paced Auditory Serial Addition Test","id":"http://www.cognitiveatlas.org/id/trm_4da87fb28978e"},
+{"name":"Leiter International Performance Scale","id":"http://www.cognitiveatlas.org/id/trm_5262cb3d852c0"},
+{"name":"picture naming task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949cfb"},
+{"name":"pattern comparison task","id":"http://www.cognitiveatlas.org/id/trm_4da86cb034ff6"},
+{"name":"Adult Attachment Interview","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949858"},
+{"name":"WAIS digit span","id":"http://www.cognitiveatlas.org/id/trm_5106eee90937a"},
+{"name":"trace conditioning","id":"http://www.cognitiveatlas.org/id/trm_4a3fd79d0b3d7"},
+{"name":"Child Behavior Checklist","id":"http://www.cognitiveatlas.org/id/trm_524b4a402c87e"},
+{"name":"Piaget's Water Jar Task","id":"http://www.cognitiveatlas.org/id/trm_5206bf053acf4"},
+{"name":"Cambridge risk task","id":"http://www.cognitiveatlas.org/id/trm_4f242042e5805"},
+{"name":"Fitts task","id":"http://www.cognitiveatlas.org/id/trm_4f24226fa2903"},
+{"name":"pointing","id":"http://www.cognitiveatlas.org/id/trm_4c89926767870"},
+{"name":"item recognition task","id":"http://www.cognitiveatlas.org/id/trm_4da869646e5d1"},
+{"name":"semantic association task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949d92"},
+{"name":"face matching task","id":"http://www.cognitiveatlas.org/id/trm_4f24247912761"},
+{"name":"nine-hole peg test","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949bdb"},
+{"name":"imagined objects/scenes","id":"http://www.cognitiveatlas.org/id/trm_4c89903149aeb"},
+{"name":"minimal feature match task ","id":"http://www.cognitiveatlas.org/id/trm_4fbd2d71adf87"},
+{"name":"serial reaction time task","id":"http://www.cognitiveatlas.org/id/trm_4f241c735e7f6"},
+{"name":"NIH Toolbox Meaning and Purpose Survey","id":"http://www.cognitiveatlas.org/id/trm_50f5bfef58abb"},
+{"name":"chimeric animal Stroop task","id":"http://www.cognitiveatlas.org/id/trm_4b843655d5d75"},
+{"name":"Gray Oral Reading Test - 4","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949aa1"},
+{"name":"verb generation task","id":"http://www.cognitiveatlas.org/id/trm_4f24183fe80c6"},
+{"name":"dual-task paradigm","id":"http://www.cognitiveatlas.org/id/trm_4da634216ebbc"},
+{"name":"word comprehension task","id":"http://www.cognitiveatlas.org/id/trm_4f240fbdf1601"},
+{"name":"syntactic acceptability judgement task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949e7c"},
+{"name":"isometric force","id":"http://www.cognitiveatlas.org/id/trm_4c8990480ad0f"},
+{"name":"Adolescent Symptom Inventory","id":"http://www.cognitiveatlas.org/id/trm_523df616da8a6"},
+{"name":"Wisconsin card sorting test","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949f21"},
+{"name":"free word list recall","id":"http://www.cognitiveatlas.org/id/trm_4c898fc6722f4"},
+{"name":"cued explicit recognition","id":"http://www.cognitiveatlas.org/id/trm_4c898b29660b0"},
+{"name":"Wechsler Memory Scale Fourth Edition","id":"http://www.cognitiveatlas.org/id/trm_4b94b12bf0eb2"},
+{"name":"mental imagery task","id":"http://www.cognitiveatlas.org/id/trm_4f240edf92865"},
+{"name":"antisaccade/prosaccade task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949869"},
+{"name":"breath-holding","id":"http://www.cognitiveatlas.org/id/trm_4c898a680e424"},
+{"name":"delayed match to sample task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb9499e3"},
+{"name":"devil's task","id":"http://www.cognitiveatlas.org/id/trm_4d559d2703bae"},
+{"name":"oddball task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949bf6"},
+{"name":"vigilance","id":"http://www.cognitiveatlas.org/id/trm_4da88a8e13f26"},
+{"name":"non-painful electrical stimulation","id":"http://www.cognitiveatlas.org/id/trm_4c8990f59266f"},
+{"name":"Ishihara plates for color blindness","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949af3"},
+{"name":"cold stimulation ","id":"http://www.cognitiveatlas.org/id/trm_4e664d3718e1b"},
+{"name":"One Touch Stockings of Cambridge","id":"http://www.cognitiveatlas.org/id/trm_50f84bbdcfa4e"},
+{"name":"sentence completion test","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949d9f"},
+{"name":"Color Trails Test","id":"http://www.cognitiveatlas.org/id/trm_4da633fe917c4"},
+{"name":"Visual Object Learning Test ","id":"http://www.cognitiveatlas.org/id/trm_50f9daf1c3834"},
+{"name":"keep-track task","id":"http://www.cognitiveatlas.org/id/trm_4c40d4054f38b"},
+{"name":"face working memory task","id":"http://www.cognitiveatlas.org/id/trm_4f2421a62cdf8"},
+{"name":"Corsi Blocks","id":"http://www.cognitiveatlas.org/id/trm_4da881dace79c"},
+{"name":"spatial working memory task","id":"http://www.cognitiveatlas.org/id/trm_4f2453b806fe1"},
+{"name":"set-shifting task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949dad"},
+{"name":"mirror tracing task","id":"http://www.cognitiveatlas.org/id/trm_4f244a67d5b17"},
+{"name":"non-choice task","id":"http://www.cognitiveatlas.org/id/trm_4d55997cd3edb"},
+{"name":"Battelle Developmental Inventory","id":"http://www.cognitiveatlas.org/id/trm_523e10cad0ce6"},
+{"name":"McGurk effect","id":"http://www.cognitiveatlas.org/id/trm_51a637dfeffd5"},
+{"name":"passive listening","id":"http://www.cognitiveatlas.org/id/trm_4c8991fadfe01"},
+{"name":"Big/Little Circle","id":"http://www.cognitiveatlas.org/id/trm_50f72fafa53ec"},
+{"name":"rubber hand illusion","id":"http://www.cognitiveatlas.org/id/trm_4e5bb14d814a8"},
+{"name":"Sternberg delayed recognition task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949e0c"},
+{"name":"sustained attention to response task","id":"http://www.cognitiveatlas.org/id/trm_4da86cfe8cf1b"},
+{"name":"foreshortened view task","id":"http://www.cognitiveatlas.org/id/trm_4fbd2dc0273d9"},
+{"name":"Graded Naming Test","id":"http://www.cognitiveatlas.org/id/trm_50f741a965470"},
+{"name":"MacArthur Communicative Development Inventories","id":"http://www.cognitiveatlas.org/id/trm_4da891794859f"},
+{"name":"Landmark task","id":"http://www.cognitiveatlas.org/id/trm_5346938eed092"},
+{"name":"Broad Autism Phenotype Questionnaire","id":"http://www.cognitiveatlas.org/id/trm_523dfd5b7a9f1"},
+{"name":"phonemic fluency task","id":"http://www.cognitiveatlas.org/id/trm_4f241be43458e"},
+{"name":"NIH Toolbox Taste Intensity Test","id":"http://www.cognitiveatlas.org/id/trm_50f379c6c9ea9"},
+{"name":"dot motion task","id":"http://www.cognitiveatlas.org/id/trm_4f244ad7dcde7"},
+{"name":"Spatial Recognition Memory","id":"http://www.cognitiveatlas.org/id/trm_50f733d7305a1"},
+{"name":"Salthouse and Babcock Listening Span task ","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949d69"},
+{"name":"memory span test","id":"http://www.cognitiveatlas.org/id/trm_4da869e68b5c4"},
+{"name":"recognition memory test","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949d40"},
+{"name":"Time Wall","id":"http://www.cognitiveatlas.org/id/trm_50c0f3e6c596e"},
+{"name":"prototype distortion task","id":"http://www.cognitiveatlas.org/id/trm_4f24550fc5f38"},
+{"name":"Vandenberg & Kuse Tasks","id":"http://www.cognitiveatlas.org/id/trm_4af89b3a925ca"},
+{"name":"object-discrimination task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949be9"},
+{"name":"action observation task","id":"http://www.cognitiveatlas.org/id/tsk_4a57abb949846"},
+{"name":"haptic illusion task","id":"http://www.cognitiveatlas.org/id/trm_4da88c205b16b"},
+{"name":"object alternation task","id":"http://www.cognitiveatlas.org/id/trm_4da88bb3c2462"}]
+
+
+var margin = {top: 10, right: -5, bottom: -5, left: -5},
+    width = 960 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
+
+var zoom = d3.behavior.zoom()
+    .scaleExtent([1, 10])
+    .on("zoom", zoomed);
+
+var drag = d3.behavior.drag()
+    .origin(function(d) { return d; })
+    .on("dragstart", dragstarted)
+    .on("drag", dragged)
+    .on("dragend", dragended);
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.right + ")")
+    .call(zoom);
+
+var rect = svg.append("rect")
+    .attr("width", width)
+    .attr("height", height)
+    .style("fill", "none")
+    .style("pointer-events", "all");
+
+var container = svg.append("g");
+
+container.append("g")
+    .attr("class", "x axis")
+  .selectAll("line")
+    .data(d3.range(0, width, 10))
+  .enter().append("line")
+    .attr("x1", function(d) { return d; })
+    .attr("y1", 0)
+    .attr("x2", function(d) { return d; })
+    .attr("y2", height);
+
+container.append("g")
+    .attr("class", "y axis")
+  .selectAll("line")
+    .data(d3.range(0, height, 10))
+  .enter().append("line")
+    .attr("x1", 0)
+    .attr("y1", function(d) { return d; })
+    .attr("x2", width)
+    .attr("y2", function(d) { return d; });
+
+
+function zoomed() {
+  container.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+}
+
+function dragstarted(d) {
+  d3.event.sourceEvent.stopPropagation();
+  d3.select(this).classed("dragging", true);
+}
+
+function dragged(d) {
+  d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
+}
+
+function dragended(d) {
+  d3.select(this).classed("dragging", false);
+}
+
+
+//Call back for when user selects an option
+function onSelect(d) {
+
+       // Here we will need to dynamically make data
+       d.x = 100
+       d.y = 80
+       // We will draw dots here to choose!
+       dot = container.append("g")
+         .attr("class", "dot")
+       .selectAll("circle")
+         .data([d])
+       .enter().append("circle")
+         .attr("r", 50)
+         .attr("cx", function(d){ return d.x})
+         .attr("cy", function(d){ return d.y})
+         .call(drag);
+       }
+
+//Setup and render the autocomplete
+function start() {
+        var mc = autocomplete(document.getElementById('tasks'))
+                .keys(tasks)
+                .dataField("name")
+                .placeHolder("Search Tasks - Start typing here")
+                .width(960)
+                .height(500)
+                .onSelected(onSelect)
+                .render();
+}
+
+
+
+// Populate article text
+d3.selectAll("h3").text(article.Title)
+start();
+
+</script>
