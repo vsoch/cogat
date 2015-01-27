@@ -45,7 +45,7 @@ class DataJson:
     return "DataJson Object dj Includes <dj.data:dict,js.json:list,dj.fields:list,dj.url:str>"
 
   """Get raw json object"""
-  def get_json__(self):
+  def get_json(self):
     return urllib2.urlopen(self.url).read()
     
   """Parse a json object into a dictionary (key = fields) of dictionaries (key = file urls)"""
