@@ -1,7 +1,23 @@
-Outline of goals, functions to:
+# Cognitive Atlas Python API
 
-- generate table of openfmri data and tasks
-- map to cognitive atlas via the URI
-- generate some single structure to wrap an image
-- generate json data structure to describe entire image set
+*in development*
+
+This API will allow python access to the RDF data structures in the cognitive atlas, including:
+
+- tasks
+- concepts
+- disorders
+- collections
+- contrasts (soon)
+
+as well as tools to annotate data, and integrate with brain imaging databases (NeuroVault) as well as annotation platforms (brainspell).  For example, [this workflow] shows doing the following:
+
+- grab contrasts and tasks from the cognitive atlas (the ontology)
+- grab images we want to label from NeuroVault (the data)
+- grab the metadata for the image from brainspell (the data structure)
+- open up interactive web interface to search and do tagging
+- click save button to output modified data structure
+
+A demo of the annotation interface that pops up is [available here](http://www.vbmis.com/bmi/project/cogatlas/annotate.html)
+
 
