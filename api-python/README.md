@@ -10,7 +10,7 @@ This API will allow python access to the RDF data structures in the cognitive at
 - collections
 - contrasts (soon)
 
-as well as tools to annotate data, and integrate with brain imaging databases (NeuroVault) as well as annotation platforms (brainspell).  For example, [this workflow] shows doing the following:
+as well as tools to annotate data, and integrate with brain imaging databases (NeuroVault) as well as annotation platforms (brainspell).  For example, [this workflow](examples/annotate_nv_images.py) shows doing the following:
 
 - grab contrasts and tasks from the cognitive atlas (the ontology)
 - grab images we want to label from NeuroVault (the data)
