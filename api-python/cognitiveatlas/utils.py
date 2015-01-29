@@ -32,7 +32,13 @@ def url_get(url):
   response = urlopen(request)
   return response.read()
 
-# Data Json Object
+# Data Json (from file)
+def read_json_file(file_path):
+  filey = open(file_path,'rb')
+  tmp = filey.readlines()
+  return json.loads("\n".join(tmp))
+
+# Data Json Object (from URL)
 class DataJson:
   """DataJson: internal class for storing json, accessed by NeuroVault Object"""
   def __init__(self,url):
@@ -83,4 +89,8 @@ class DataRDF:
     for subj, pred, obj in self.rdf:
       tmp.loc[count] = [subj.encode("utf-8"),pred.encode("utf-8"),obj.encode("utf-8")]
       count += 1
+    # Create a column without the url
+    trm = [t.replace("http://www.cognitiveatlas.org/id/","") for t in tmp["subject"]]
+    tmp["UID"] = trm
+    tmp.columns = ["URL","TYPE","NAME","UID"]
     return tmp

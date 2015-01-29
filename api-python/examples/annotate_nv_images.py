@@ -1,25 +1,46 @@
 #!/usr/bin/python
 
-from cognitiveatlas import api, brainspell,views
-
+from cognitiveatlas import api, brainspell,views,utils
+from pyneurovault import api as nvapi 
+from pyneurovault import pubmed as pm
+import pandas
 
 # COGNITIVE ATLAS: Get data frames with tasks and contrasts
 tasks = api.get_tasks_df(filters="http://www.w3.org/2004/02/skos/core#prefLabel")
-# Note: this data is not exposed yet, this is just a dummy for now
-contrasts = api.get_concepts_df(filters="http://www.w3.org/2004/02/skos/core#prefLabel")
-
+# We only have data dump for now for conditions
+contrasts = api.get_contrasts_dump()
 
 # NEUROVAULT:
-# Here we will get an image from NeuroVault using pyneurovault (should give us a doi or pmid)
-# TODO: write function for pyneurovault api (may need to look up pmid from doi if not available)
+# Here is metadata about the openfmri experiments - we will be getting statistical maps from NeuroVault
+openfmri = pandas.read_csv("examples/data/openfmri.txt",sep="\t")
+openfmri = openfmri[openfmri["doi_or_pmid"].isnull()==False] # get rid of empty
+openfmri = openfmri[openfmri["doi_or_pmid"].str.contains("/")] # NeuroVault can only lookup by doi
+collections = nvapi.collections_from_dois(openfmri["doi_or_pmid"])
+collections = [collection for collection in collections if collection.data is not None]
+images = nvapi.images_from_collections(collections)
+# TODO: the above should return one clean object with both these things.
 
 
-# BRAINSPELL: grab a brainspell article data structure (using NeuroVault pmid)
-# For now we will use an example pmid from Roberto.
-pmid = "16863694"
-article = brainspell.get_article(pmid)
+# PUBMED:
+# Look up pmids for each collection
+pubmed = pm.Pubmed(email="vsochat@stanford.edu")
+articles = []; pmids = []
+for collection in collections:
+  article = pubmed.get_single_article(collection.data["DOI"])
+  articles.append(article)
+  pmids.append(article.get_pmid())
+
+# BRAINSPELL: grab a brainspell article data structure for each pmid 
+brainspells = [brainspell.get_article(pmid) for pmid in pmids]
+# Or grab a flat json file of your choice
+brainspells = [utils.read_json_file("examples/data/article.json")]
 
 # ANNOTATE
-# Now we can open an annotation interface for each image we want to annotate [eg, a loop could be here]
+# Now we can open an annotation interface for each image we want to annotate
 # This will let us search for tasks and select contrasts to add to the brainspell data structure, and save the new data structure
-views.annotate_images(tasks=tasks,article=article,contrasts=contrasts)
+for i in range(0,len(images)):
+  article = brainspells[i]
+  imageset = images[i]
+  for image in imageset:
+    views.annotate_images(tasks=tasks,contrasts=contrasts,article=article,image=image)
+

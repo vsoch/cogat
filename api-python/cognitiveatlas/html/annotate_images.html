@@ -1384,6 +1384,9 @@ function autocomplete(parent) {
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
 
+// Here is the image info
+var image_info = [IMAGE_INFO]
+
 // Here is the brainspell article
 article = [BRAINSPELL_ARTICLE]
 
@@ -1481,12 +1484,12 @@ function onSelect(d) {
 
        // When we have contrasts, we will filter down to task here
        // For now we will come up with random ones
-       number = getRandomInt(1,3)
        acolor = color(getRandomInt(1,20))
        cons = []
-       for (i = 0; i < number; i++) { 
+       for (i = 0; i < d.contrasts.length; i++) { 
           single_contrast = []
-          single_contrast.name = "[Task: " + d.name + "|Contrast " + i + "]";
+          single_contrast.name = "[Task: " + d.name + "|Contrast " + d.contrasts[i].conname + "]";
+          single_contrast.uid = d.contrasts[i].conid;
           single_contrast.x = getRandomInt(50,200)
           single_contrast.y = getRandomInt(50,200)
           cons.push(single_contrast)
@@ -1530,7 +1533,7 @@ function exportJSON() {
     .attr("x",function(d){
      if (d.x >= width/2) {
        console.log("keeping contrast " + d.name)
-       keepers.push(d.name)
+       keepers.push(d.uid)
      }
      return d.x
      })
@@ -1541,11 +1544,13 @@ function exportJSON() {
      } else { return d.color }
     })
 
+    article.neurovault = image_info;
+
     // Append to json
     article.Contrasts = keepers
     d3.selectAll(".download").text("")
     var exportData = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(article));
-$('<a href="data:' + exportData + '" download="CA-Annotation.json">download JSON</a>').appendTo('#download');
+$('<a href="data:' + exportData + '" download="' + image_info[0].image_key + '.json">download JSON</a>').appendTo('#download');
 }
 
 // Populate article text

@@ -53,20 +53,37 @@ def make_tmp_folder():
   yield temp_dir
   shutil.rmtree(temp_dir)
 
-def annotate_images(tasks,article,contrasts):
-  # Prepare tasks as dictionary
-  task_keys = list(tasks["subject"])
-  task_names = list(tasks["object"])
+def annotate_images(tasks=tasks,contasts=contrasts,article,contrasts,image=image):
+  # Prepare lookup table for contrasts
+  task_keys = list(tasks["UID"])
+  task_names = list(tasks["NAME"]) 
+  lookup = dict()
+  for task in task_keys:
+    subset = contrasts[contrasts["UID"].isin([task])]
+    tmp = ['{"conname":"%s","conid":"%s"}' %(item[1]["CONTRAST_TEXT"],item[1]["ID"]) for item in subset.iterrows()]
+    if tmp: lookup[task] = tmp # only include if defined contrasts
+
+  # Removed tasks without contrasts
+  tasks[tasks["UID"].isin(lookup.keys())]
+  task_keys = list(tasks["UID"])
+  task_names = list(tasks["NAME"]) 
   task_list = "["
   for t in range(0,len(task_keys)-1):
-    task_list = '%s{"name":"%s","id":"%s"},\n' %(task_list,task_names[t],task_keys[t])
-  task_list = '%s{"name":"%s","id":"%s"}]\n' %(task_list,task_names[-1],task_keys[-1])
+    task_list = '%s{"name":"%s","id":"%s","contrasts":[%s]},\n' %(task_list,task_names[t],task_keys[t],",".join(lookup[task_keys[t]]))
+  task_list = '%s{"name":"%s","id":"%s","contrasts":[%s]}]\n' %(task_list,task_names[-1],task_keys[-1],",".join(lookup[task_keys[-1]]))
+
+  # Image info
+  image_id = str(image["url"].replace("http://neurovault.org/images/","")[:-1])
+  image_info = '{"name":"%s","file":"%s","collection_key":"%s","image_key":"%s"}' %(image["file"],image["url"],image["collection"],image_id)
 
   # Get template 
   template = get_template("annotate_images")
 
   # Add task_list to template
   template = add_string({"CA_TASKS":task_list},template)
+
+  # Add image_info to template
+  template = add_string({"IMAGE_INFO":image_info},template)
 
   # Add article to template
   template = add_string({"BRAINSPELL_ARTICLE":json.dumps(article.data)},template)

@@ -26,6 +26,8 @@ __date__ = "$Date: 2015/01/23 $"
 __license__ = "BSD"
 
 def get_article(pmid):
-   """Get concepts data frame"""
-   return DataJson("http://brainspell.org/json/pmid/%s" %(pmid))
-   
+   """Get brainspell article"""
+   try:
+     return DataJson("http://brainspell.org/json/pmid/%s" %(pmid))
+   else:
+     print "ERROR %s is not in the brainspell database!" %(pmid) 
