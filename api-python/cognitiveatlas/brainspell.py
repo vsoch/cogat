@@ -29,5 +29,9 @@ def get_article(pmid):
    """Get brainspell article"""
    try:
      return DataJson("http://brainspell.org/json/pmid/%s" %(pmid))
-   else:
+   except:
      print "ERROR %s is not in the brainspell database!" %(pmid) 
+
+def article_from_json(file_path):
+   """Read in from json directly"""
+   

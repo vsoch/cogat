@@ -1376,7 +1376,8 @@ function autocomplete(parent) {
 </nav>
 
   
-<h3 id="title" style="padding-top: 70px; padding-bottom:10px; padding-left:5px"></h3>
+<h3 id="title" style="padding-top: 70px;padding-left:5px"></h3>
+<h4 id="image_info" style="padding-bottom:10px; padding-left:5px"></h4>
 <div id="tasks" style="width:800px height:100%;"></div>
 <button type="button" class="btn btn-success btn-lg savebutton" onclick="exportJSON()">
   <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Save
@@ -1550,11 +1551,12 @@ function exportJSON() {
     article.Contrasts = keepers
     d3.selectAll(".download").text("")
     var exportData = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(article));
-$('<a href="data:' + exportData + '" download="' + image_info[0].image_key + '.json">download JSON</a>').appendTo('#download');
+$('<a href="data:' + exportData + '" download="' + image_info.image_key + '.json">download JSON</a>').appendTo('#download');
 }
 
 // Populate article text
 d3.selectAll("h3").text(article.Title)
+d3.selectAll("h4").text(image_info.name)
 start();
 
 </script>

@@ -16,6 +16,7 @@ import rdflib
 import urllib2
 import numpy as np
 import pandas
+from pandas.io.parsers import read_csv
 from urllib2 import Request, urlopen, HTTPError
 
 # File operations 
@@ -34,9 +35,15 @@ def url_get(url):
 
 # Data Json (from file)
 def read_json_file(file_path):
+  filey = read_text_file(file_path)
+  return json.loads(filey)
+
+# Text (from file)
+def read_text_file(file_path):
   filey = open(file_path,'rb')
   tmp = filey.readlines()
-  return json.loads("\n".join(tmp))
+  filey.close()
+  return "\n".join(tmp)
 
 # Data Json Object (from URL)
 class DataJson:

@@ -26,7 +26,7 @@ __version__ = "$Revision: 1.0 $"
 __date__ = "$Date: 2015/01/23 $"
 __license__ = "BSD"
 
-
+  
 def get_concepts_df(filters=None):
   concepts = DataRDF("http://www.cognitiveatlas.org/rdf/objects/all_concepts.rdf")
   if filters: concepts.triples = filter_result(concepts.triples,filters,"TYPE") 
@@ -68,4 +68,3 @@ def task_and_contrast(tasks,contrasts,join_column):
 def filter_result(triples_df,filters,column_id):
   if isinstance(filters,str): filters = [filters]  
   return triples_df[triples_df[column_id].isin(filters)] 
-

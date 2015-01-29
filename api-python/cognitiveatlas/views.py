@@ -21,7 +21,6 @@ import webbrowser
 import numpy as np
 import pandas as pd
 import nibabel as nb
-from utils import DataJson
 from template import get_template, add_string
 
 __author__ = ["Poldracklab","Vanessa Sochat"]
@@ -44,7 +43,7 @@ def internal_view(html_snippet,tmp_file):
   html_file.close()
   url = 'file://%s' %(tmp_file)
   webbrowser.open_new_tab(url)
-  raw_input("Press Enter to finish...")
+  raw_input("Press Enter for next/to finish...")
 
 # Make temporary directory
 @contextlib.contextmanager
@@ -53,7 +52,7 @@ def make_tmp_folder():
   yield temp_dir
   shutil.rmtree(temp_dir)
 
-def annotate_images(tasks=tasks,contasts=contrasts,article,contrasts,image=image):
+def annotate_images(tasks,contrasts,article,image):
   # Prepare lookup table for contrasts
   task_keys = list(tasks["UID"])
   task_names = list(tasks["NAME"]) 
@@ -64,7 +63,7 @@ def annotate_images(tasks=tasks,contasts=contrasts,article,contrasts,image=image
     if tmp: lookup[task] = tmp # only include if defined contrasts
 
   # Removed tasks without contrasts
-  tasks[tasks["UID"].isin(lookup.keys())]
+  tasks = tasks[tasks["UID"].isin(lookup.keys())]
   task_keys = list(tasks["UID"])
   task_names = list(tasks["NAME"]) 
   task_list = "["
@@ -75,19 +74,14 @@ def annotate_images(tasks=tasks,contasts=contrasts,article,contrasts,image=image
   # Image info
   image_id = str(image["url"].replace("http://neurovault.org/images/","")[:-1])
   image_info = '{"name":"%s","file":"%s","collection_key":"%s","image_key":"%s"}' %(image["file"],image["url"],image["collection"],image_id)
+  image_info = image_info.encode("utf-8")
 
   # Get template 
   template = get_template("annotate_images")
-
   # Add task_list to template
   template = add_string({"CA_TASKS":task_list},template)
-
   # Add image_info to template
   template = add_string({"IMAGE_INFO":image_info},template)
-
   # Add article to template
-  template = add_string({"BRAINSPELL_ARTICLE":json.dumps(article.data)},template)
-
-  # add contrasts to template
-  # will do when we get them!
+  template = add_string({"BRAINSPELL_ARTICLE":article},template)
   view(template)
