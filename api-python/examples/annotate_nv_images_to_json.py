@@ -5,11 +5,6 @@ from pyneurovault import api as nvapi
 from pyneurovault import pubmed as pm
 import pandas
 
-# COGNITIVE ATLAS: Get data frames with tasks and contrasts
-tasks = api.get_tasks_df(filters="http://www.w3.org/2004/02/skos/core#prefLabel")
-# We only have data dump for now for conditions
-contrasts = api.get_contrasts_dump()
-
 # NEUROVAULT: get all openfmri studies
 nv = nvapi.NeuroVault()
 df = nv.get_images_with_collections_df()
@@ -51,5 +46,5 @@ for i in range(0,len(pmids)):
   article = brainspells[pmid]
   imageset = images[i]
   for image in imageset:
-    views.annotate_images_contrasts_json(tasks=tasks,contrasts=contrasts,article=article,image=image)
+    views.annotate_images_contrasts_json(article=article,image=image)
 

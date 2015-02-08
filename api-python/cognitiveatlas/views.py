@@ -21,7 +21,8 @@ import webbrowser
 import numpy as np
 import pandas as pd
 import nibabel as nb
-from template import get_template, add_string
+from api import merge_df, get_contrasts_dump, get_tasks_df
+from template import get_template, add_string, save_text, load_text
 
 __author__ = ["Poldracklab","Vanessa Sochat"]
 __version__ = "$Revision: 1.0 $"
@@ -58,23 +59,29 @@ def annotate_images_concepts():
   print "TODO"
 
 '''Produce a d3 autocomplete to embed in a django crispy form'''
-def contrast_selector_django_crispy_form(django_field,include_bootstrap=True):
+def contrast_selector_django_crispy_form(django_field,include_bootstrap=True,from_file=None):
+
+  if from_file:
+    html_snippet = load_text(from_file)
+  else:
+    html_snippet = create_contrast_task_definition_json()
 
   # Get template 
   template = get_template("cognitive_atlas_contrast_selector")
   django_field_div = "div_id_%s" % (django_field)
   django_field_id = "id_%s" % (django_field)
+  django_field_hint = "hint_id_%s" %(django_field)
   substitutions = {"DJANGO_FIELD":django_field,
                    "DJANGO_FIELD_DIV":django_field_div,
-                   "DJANGO_FIELD_ID":django_field_id}
+                   "DJANGO_FIELD_ID":django_field_id,
+                   "DJANGO_FIELD_HINT":django_field_hint,
+                   "TASKS_DATA":html_snippet}
+
   template = add_string(substitutions,template)
   if not include_bootstrap: template = template[6:len(template)]
   return template
 
-'''Annotate images with contrasts from cognitive atlas
-this is intended for local annotation to produce a json from brainspell
-with the article'''
-def annotate_images_contrasts_json(tasks,contrasts,article,image):
+def make_contrast_lookup_table(contrasts,tasks):
   # Prepare lookup table for contrasts
   task_keys = list(tasks["UID"])
   task_names = list(tasks["NAME"]) 
@@ -88,10 +95,30 @@ def annotate_images_contrasts_json(tasks,contrasts,article,image):
   tasks = tasks[tasks["UID"].isin(lookup.keys())]
   task_keys = list(tasks["UID"])
   task_names = list(tasks["NAME"]) 
+  task_description = [t.replace('\n','|').replace('"',"'").replace("\r","") for t in tasks["DESCRIPTION"]]
   task_list = "["
-  for t in range(0,len(task_keys)-1):
-    task_list = '%s{"name":"%s","id":"%s","contrasts":[%s]},\n' %(task_list,task_names[t],task_keys[t],",".join(lookup[task_keys[t]]))
-  task_list = '%s{"name":"%s","id":"%s","contrasts":[%s]}]\n' %(task_list,task_names[-1],task_keys[-1],",".join(lookup[task_keys[-1]]))
+  for t in range(0,len(task_keys)):
+    task_list = '%s{"name":"%s","id":"%s","description":"%s","contrasts":[%s]},\n' %(task_list,task_names[t],task_keys[t],task_description[t],",".join(lookup[task_keys[t]]))
+  # The last entry is a "None" option
+  task_list = '%s{"name":"None / Other","id":"None","contrasts":[{"conname":"None / Other","conid":"None"}]}]\n' %(task_list)
+  return task_list
+
+def create_contrast_task_definition_json():
+  definitions = get_tasks_df(filters="http://www.w3.org/2004/02/skos/core#definition")
+  tasks = get_tasks_df(filters="http://www.w3.org/2004/02/skos/core#prefLabel")
+  contrasts = get_contrasts_dump()
+  tasks = merge_df(left=definitions,right=tasks,join_column="UID")
+  tasks = tasks[tasks.URL_x.notnull()]  
+  tasks = tasks[["URL_x","NAME_x","UID","NAME_y"]]
+  tasks.columns = ["URL","DESCRIPTION","UID","NAME"]
+  task_list = make_contrast_lookup_table(contrasts,tasks) 
+  return task_list
+
+'''Annotate images with contrasts from cognitive atlas
+this is intended for local annotation to produce a json from brainspell
+with the article'''
+def annotate_images_contrasts_json(article,image):
+  task_list = create_contrast_task_definition_json()
 
   # Image info
   image_id = str(image["url"].replace("http://neurovault.org/images/","")[:-1])

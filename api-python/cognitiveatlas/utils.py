@@ -18,6 +18,8 @@ import numpy as np
 import pandas
 from pandas.io.parsers import read_csv
 from urllib2 import Request, urlopen, HTTPError
+from rdflib.plugin import register, Serializer, Parser
+register('text/rdf+n3', Parser, 'rdflib.plugins.parsers.notation3', 'N3Parser')
 
 # File operations 
 def mkdir_p(path):
@@ -67,6 +69,28 @@ class DataJson:
       self.json = self.get_json()
     return json.loads(self.json)
 
+# Data Triples Object
+class DataTriples:
+  def __init__(self,url="http://www.cognitiveatlas.org/rdf/triplify/task"):
+    self.url = url
+    self.triples = self.get_triples()
+    self.triples = self.parse()
+
+  def get_triples(self):
+    graph = rdflib.Graph()
+    return graph.parse(self.url)
+
+  def parse(self):
+    tmp = pandas.DataFrame(columns=["subject","predicate","object"])
+    count=0
+    for subj,pred,obj in self.triples:
+      tmp.loc[count] = [subj.encode("utf-8"),pred.encode("utf-8"),obj.encode("utf-8")]
+      count+=1
+    trm = [os.path.split(t)[1] for t in tmp["subject"]]
+    tmp["UID"] = trm
+    tmp.columns = ["URL","TYPE","NAME","UID"]
+    return tmp    
+
 # Data RDF Object
 class DataRDF:
   """DataRDF: internal class for storing rdf, accessed by cognitiveatlas"""
@@ -97,7 +121,7 @@ class DataRDF:
       tmp.loc[count] = [subj.encode("utf-8"),pred.encode("utf-8"),obj.encode("utf-8")]
       count += 1
     # Create a column without the url
-    trm = [t.replace("http://www.cognitiveatlas.org/id/","") for t in tmp["subject"]]
+    trm = [os.path.split(t)[1] for t in tmp["subject"]]
     tmp["UID"] = trm
     tmp.columns = ["URL","TYPE","NAME","UID"]
     return tmp

@@ -12,6 +12,19 @@ def add_javascript_function(function_code,template):
   template.append("<script>\n%s\n</script>" % (function_code))
   return template
 
+# Load text from file
+def load_text(input_file):
+  filey = open(input_file,"rb")
+  text = filey.readlines()
+  filey.close()
+  return "".join(text)
+
+# Save text to file
+def save_text(text,outfile):
+  filey = open(outfile,"wb")
+  filey.writelines(text)
+  filey.close()
+
 def read_template(html_name):
   # Get package directory
   ppwd = get_package_dir()  
