@@ -19,5 +19,6 @@ as well as tools to annotate data, and integrate with brain imaging databases (N
 - click save button to output modified data structure
 
 A demo of the annotation interface that pops up is [available here](http://www.vbmis.com/bmi/project/cogatlas/annotate.html)
+A demo of the crispy form (django) integration is [available here](http://vbmis.com/bmi/share/cogatlas/cogatlas.html)
 
 
