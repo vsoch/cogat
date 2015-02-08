@@ -52,7 +52,29 @@ def make_tmp_folder():
   yield temp_dir
   shutil.rmtree(temp_dir)
 
-def annotate_images(tasks,contrasts,article,image):
+'''Annotate images with concepts from cognitive atlas
+there can be more than one concept per image'''
+def annotate_images_concepts():
+  print "TODO"
+
+'''Produce a d3 autocomplete to embed in a django crispy form'''
+def contrast_selector_django_crispy_form(django_field,include_bootstrap=True):
+
+  # Get template 
+  template = get_template("cognitive_atlas_contrast_selector")
+  django_field_div = "div_id_%s" % (django_field)
+  django_field_id = "id_%s" % (django_field)
+  substitutions = {"DJANGO_FIELD":django_field,
+                   "DJANGO_FIELD_DIV":django_field_div,
+                   "DJANGO_FIELD_ID":django_field_id}
+  template = add_string(substitutions,template)
+  if not include_bootstrap: template = template[6:len(template)]
+  return template
+
+'''Annotate images with contrasts from cognitive atlas
+this is intended for local annotation to produce a json from brainspell
+with the article'''
+def annotate_images_contrasts_json(tasks,contrasts,article,image):
   # Prepare lookup table for contrasts
   task_keys = list(tasks["UID"])
   task_names = list(tasks["NAME"]) 
@@ -77,7 +99,7 @@ def annotate_images(tasks,contrasts,article,image):
   image_info = image_info.encode("utf-8")
 
   # Get template 
-  template = get_template("annotate_images")
+  template = get_template("annotate_images_contrasts_json")
   # Add task_list to template
   template = add_string({"CA_TASKS":task_list},template)
   # Add image_info to template

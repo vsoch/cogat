@@ -15,7 +15,7 @@ setup(
     packages=["cognitiveatlas"],
 
     # Data
-    package_data = {'cognitiveatlas':['template/*.html']},
+    package_data = {'cognitiveatlas':['html/*.html']},
 
     # Details
     url="http://www.cognitiveatlas.org",

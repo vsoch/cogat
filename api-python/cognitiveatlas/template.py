@@ -7,6 +7,11 @@ def get_package_dir():
 def get_template(html_name):
   return read_template(html_name)
   
+# Add code string to end of template
+def add_javascript_function(function_code,template):
+  template.append("<script>\n%s\n</script>" % (function_code))
+  return template
+
 def read_template(html_name):
   # Get package directory
   ppwd = get_package_dir()  

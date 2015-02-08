@@ -51,5 +51,5 @@ for i in range(0,len(pmids)):
   article = brainspells[pmid]
   imageset = images[i]
   for image in imageset:
-    views.annotate_images(tasks=tasks,contrasts=contrasts,article=article,image=image)
+    views.annotate_images_contrasts_json(tasks=tasks,contrasts=contrasts,article=article,image=image)
 
