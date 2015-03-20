@@ -62,7 +62,7 @@ def get_conditions_dump(filters=None):
 
 def get_contrasts_dump(filters=None):
   pwd = os.path.dirname(utils.__file__)
-  contrasts= pandas.read_csv("%s/data/contrast_2015-01-25.csv" %(pwd),sep=";")
+  contrasts= pandas.read_csv("%s/data/contrast_2015-01-25.csv" %(pwd),sep=",")
   contrasts.columns = ["ID","ID_USER","UID","CONTRAST_TEXT","EVENT_STAMP"]
   return contrasts
 

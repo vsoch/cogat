@@ -64,7 +64,7 @@ def contrast_selector_django_crispy_form(django_field,include_bootstrap=True,fro
   if from_file:
     html_snippet = load_text(from_file)
   else:
-    html_snippet = create_contrast_task_definition_json()
+    html_snippet = create_contrast_task_definition_json(filter_out_empty_contrasts=True)
 
   # Get template 
   template = get_template("cognitive_atlas_contrast_selector")
@@ -81,18 +81,22 @@ def contrast_selector_django_crispy_form(django_field,include_bootstrap=True,fro
   if not include_bootstrap: template = template[6:len(template)]
   return template
 
-def make_contrast_lookup_table(contrasts,tasks):
+def make_contrast_lookup_table(contrasts,tasks,only_with_contrast):
   # Prepare lookup table for contrasts
   task_keys = list(tasks["UID"])
   task_names = list(tasks["NAME"]) 
   lookup = dict()
+  has_contrast = []
   for task in task_keys:
     subset = contrasts[contrasts["UID"].isin([task])]
     tmp = ['{"conname":"%s","conid":"%s"}' %(item[1]["CONTRAST_TEXT"],item[1]["ID"]) for item in subset.iterrows()]
-    if tmp: lookup[task] = tmp # only include if defined contrasts
+    lookup[task] = tmp # tasks without contrasts will be []
+    if len(tmp) != 0: has_contrast.append(task)
 
-  # Removed tasks without contrasts
-  tasks = tasks[tasks["UID"].isin(lookup.keys())]
+  # Removed tasks without contrasts  
+  if only_with_contrast == True:    
+    tasks = tasks[tasks["UID"].isin(has_contrast)]
+  
   task_keys = list(tasks["UID"])
   task_names = list(tasks["NAME"]) 
   task_description = [t.replace('\n','|').replace('"',"'").replace("\r","") for t in tasks["DESCRIPTION"]]
@@ -103,7 +107,7 @@ def make_contrast_lookup_table(contrasts,tasks):
   task_list = '%s{"name":"None / Other","id":"None","contrasts":[{"conname":"None / Other","conid":"None"}]}]\n' %(task_list)
   return task_list
 
-def create_contrast_task_definition_json():
+def create_contrast_task_definition_json(only_with_contrast=False):
   definitions = get_tasks_df(filters="http://www.w3.org/2004/02/skos/core#definition")
   tasks = get_tasks_df(filters="http://www.w3.org/2004/02/skos/core#prefLabel")
   contrasts = get_contrasts_dump()
@@ -111,7 +115,7 @@ def create_contrast_task_definition_json():
   tasks = tasks[tasks.URL_x.notnull()]  
   tasks = tasks[["URL_x","NAME_x","UID","NAME_y"]]
   tasks.columns = ["URL","DESCRIPTION","UID","NAME"]
-  task_list = make_contrast_lookup_table(contrasts,tasks) 
+  task_list = make_contrast_lookup_table(contrasts,tasks,only_with_contrast=only_with_contrast) 
   return task_list
 
 '''Annotate images with contrasts from cognitive atlas

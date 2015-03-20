@@ -4,7 +4,8 @@
 from cognitiveatlas import views,template
 
 cogat_json = "/home/vanessa/Desktop/cognitiveatlas_tasks.json"
-task_list = views.create_contrast_task_definition_json()
+task_list = views.create_contrast_task_definition_json() # default will include tasks with no contrasts defined
+task_list = views.create_contrast_task_definition_json(only_with_contrast=True) # only include tasks with contrasts defined
 template.save_text(task_list,cogat_json)
 
 # Now we will generate an html snippet (eg, to embed into a django crispy form)
